@@ -9,7 +9,7 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorTransparente</item>
         //pendiente cambiar el backgruno de las pantallas
-        <item name="android:windowBackground">@drawable/gradien_splash</item>
+        <item name="android:windowBackground">@drawable/gradien_fondo</item>
     </style>
 
 
