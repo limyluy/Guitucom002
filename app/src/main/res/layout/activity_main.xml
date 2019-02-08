@@ -14,7 +14,8 @@
         android:layout_marginTop="95dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_nube2" />
+        app:srcCompat="@drawable/img_nube"
+        android:contentDescription="@string/nubes"/>
 
     <ImageView
         android:id="@+id/img_nube1"
@@ -24,7 +25,9 @@
         android:layout_marginEnd="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_nube3" />
+        app:srcCompat="@drawable/img_nube"
+        android:contentDescription="@string/nubes"
+       />
 
     <ImageView
         android:id="@+id/img_nube3"
@@ -34,7 +37,9 @@
         android:layout_marginTop="250dp"
         app:layout_constraintStart_toStartOf="@+id/img_nube1"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_nube" />
+        app:srcCompat="@drawable/img_nube"
+        android:contentDescription="@string/nubes"
+        />
 
     <View
         android:id="@+id/view"
