@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Guitucom</string>
     <string name="nubes">nubes</string>
+    <string name="mapa">mapa con marker</string>
 </resources>

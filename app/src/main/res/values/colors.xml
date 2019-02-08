@@ -5,5 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorTransparente">#00BA99F1</color>
     <color name="colorTituloPrincioal">#B4FBFAFC</color>
+    <color name="colorTextPrincipal">#534377</color>
 
 </resources>

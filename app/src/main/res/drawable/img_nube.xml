@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
     xmlns:tools="http://schemas.android.com/tools"
     android:viewportWidth="180.21"
@@ -23,7 +25,9 @@
                     android:startY="0"
                     android:type="linear"
                     android:tileMode="repeat"
+
                     tools:targetApi="n">
+                    //el codigo de arriba deja ver solo a los celulares android "n"
                     <item
                         android:color="#A5A0C5"
                         android:offset="0.3" />
