@@ -2,4 +2,8 @@
     <string name="app_name">Guitucom</string>
     <string name="nubes">nubes</string>
     <string name="mapa">mapa con marker</string>
+    <string name="btnLugares">Lugares de Interes</string>
+    <string name="btnDescuentos">Descuentos</string>
+    <string name="btnOferetas">Ofertas</string>
+    <string name="btnEventos">Eventos</string>
 </resources>

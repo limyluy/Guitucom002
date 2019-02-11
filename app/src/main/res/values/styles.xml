@@ -25,6 +25,8 @@
 
     <style name="ButtonStyle" parent="Base.TextAppearance.AppCompat.Button">
         <item name="android:background">@drawable/boton</item>
+        <item name="android:textColor">@color/colorTextPrincipal</item>
+        <item name="android:textStyle">bold</item>
 
 
         <item name="android:gravity">center</item>

@@ -66,20 +66,53 @@
         android:contentDescription="@string/nubes"/>
 
     <Button
+        android:id="@+id/btn_ofertas"
+        android:layout_width="138dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+
+        android:text="@string/btnOferetas"
+        app:layout_constraintBottom_toTopOf="@+id/btn_eventos"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btn_eventos"
+        android:layout_width="167dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+
+        android:text="@string/btnEventos"
+        app:layout_constraintBottom_toTopOf="@+id/btn_descuentos"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btn_descuentos"
+        android:layout_width="202dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+
+        android:text="@string/btnDescuentos"
+        app:layout_constraintBottom_toTopOf="@+id/btn_lugares"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+    <Button
         android:id="@+id/btn_lugares"
         android:layout_width="235dp"
         android:layout_height="44dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="75dp"
 
-
-        android:elevation="10dp"
-        android:text="Lugares de Interes"
-        android:textColor="@color/colorTextPrincipal"
-        android:textSize="14dp"
-        android:textStyle="bold"
+        android:text="@string/btnLugares"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+
 
 
 </android.support.constraint.ConstraintLayout>
