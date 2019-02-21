@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/mapa_vector"
+        app:srcCompat="@mipmap/mapaxxhdpi"
         android:contentDescription="@string/nubes"/>
 
     <Button
@@ -125,6 +125,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
         android:elevation="10dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_ipiales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Ipiales"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        android:textSize="50dp"
+        android:padding="20dp"
         />
 
 

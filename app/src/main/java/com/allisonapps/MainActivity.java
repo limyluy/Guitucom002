@@ -1,5 +1,6 @@
 package com.allisonapps;
 
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.MenuItemCompat;
@@ -10,9 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView txtIpiales;
 
 
 
@@ -26,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+        txtIpiales = findViewById(R.id.txt_ipiales);
+
+        Typeface face = Typeface.createFromAsset(getAssets(),"fonts/fantastic.ttf");
+        txtIpiales.setTypeface(face);
 
 
 
