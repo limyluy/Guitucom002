@@ -16,29 +16,33 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtIpiales;
+    //witget
+    private TextView txtGuiatu;
+    private TextView txtMascien;
 
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         // para realizar el splashScrem seteamos el Style Appthem.SpalshScremm en el Manifes
         // con la liena de codigo abajo volvemos al tema original de la aplicacion
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // linea para dar soporte a la creacion de graficos con vectores
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        txtIpiales = findViewById(R.id.txt_ipiales);
+        // encontrar los witget de la activity main
+        txtGuiatu = findViewById(R.id.txt_guiaturistica);
+        txtMascien = findViewById(R.id.txt_mascien);
 
-        Typeface face = Typeface.createFromAsset(getAssets(),"fonts/fantastic.ttf");
-        txtIpiales.setTypeface(face);
-
-
-
+        // seteamos el tipo de fuente de los texview
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/johan.ttf");
+        txtGuiatu.setTypeface(face);
+        Typeface face1 = Typeface.createFromAsset(getAssets(), "fonts/johan.ttf");
+        txtMascien.setTypeface(face1);
 
 
     }
+
 
 }
