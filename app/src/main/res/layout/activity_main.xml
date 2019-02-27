@@ -130,8 +130,9 @@
             android:id="@+id/edt_busar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-
-            android:hint="Que vas a Comprar" />
+            android:hint="Que vas a Comprar"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"/>
 
         <ImageView
             android:id="@+id/img_bucar"
@@ -142,6 +143,7 @@
             />
 
         <ImageView
+            android:id="@+id/img_borrar"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:elevation="5dp"
