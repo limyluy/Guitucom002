@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SujerenciasBusqueda"
+        <activity android:name=".LocalesLista"></activity>
+        <activity
+            android:name=".SujerenciasBusqueda"
             android:configChanges="screenSize|orientation"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.SplashScreem">
