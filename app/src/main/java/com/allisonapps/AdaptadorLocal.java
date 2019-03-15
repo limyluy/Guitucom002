@@ -35,7 +35,6 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         ColorDrawable colorDrawable = new ColorDrawable();
         colorDrawable.setColor(Color.parseColor(color));
 
-        ArrayList<Calificaciones> calificaciones = model.getCalificaciones();
 
         holder.titulo.setText(model.getNombre());
         holder.descripcion.setText(model.getDescripcion());
@@ -49,6 +48,9 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
                 .centerCrop()
                 .into(holder.logo);
       // holder.dirigeme.setText(model.getGeoPoint().toString());
+        holder.numAtencion.setText(String.valueOf(model.getAtencion()));
+        holder.numCalidad.setText(String.valueOf(model.getCalidad()));
+        holder.numPrecio.setText(String.valueOf(model.getPrecio()));
     }
 
     @NonNull
@@ -69,6 +71,9 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         ImageView garantia;
         Button dirigeme;
         ImageView fondo;
+        TextView numAtencion;
+        TextView numCalidad;
+        TextView numPrecio;
 
 
         public LocalHolder(@NonNull View itemView) {
@@ -83,6 +88,9 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
             garantia = itemView.findViewById(R.id.img_icon_garantia);
             dirigeme = itemView.findViewById(R.id.btn_local_dirigir);
             logo = itemView.findViewById(R.id.img_card_logo);
+            numAtencion = itemView.findViewById(R.id.txt_num_atencion);
+            numCalidad = itemView.findViewById(R.id.txt_num_calidad);
+            numPrecio = itemView.findViewById(R.id.txt_num_precio);
 
 
         }

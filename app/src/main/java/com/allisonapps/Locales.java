@@ -16,12 +16,14 @@ public class Locales {
     private GeoPoint geoPoint;
     private long mgeusta;
     private String fondoColor;
-    private ArrayList<Calificaciones> calificaciones;
+    private int atencion;
+    private int precio;
+    private int calidad;
 
     public Locales() {
     }
 
-    public Locales(String nombre, String descripcion, String logo, String imagen, boolean garage, boolean targeta, boolean garantia, GeoPoint geoPoint, long mgeusta, String fondoColor, ArrayList<Calificaciones> calificaciones) {
+    public Locales(String nombre, String descripcion, String logo, String imagen, boolean garage, boolean targeta, boolean garantia, GeoPoint geoPoint, long mgeusta, String fondoColor, int atencion, int precio, int calidad) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.logo = logo;
@@ -32,7 +34,9 @@ public class Locales {
         this.geoPoint = geoPoint;
         this.mgeusta = mgeusta;
         this.fondoColor = fondoColor;
-        this.calificaciones = calificaciones;
+        this.atencion = atencion;
+        this.precio = precio;
+        this.calidad = calidad;
     }
 
     public String getNombre() {
@@ -115,11 +119,27 @@ public class Locales {
         this.fondoColor = fondoColor;
     }
 
-    public ArrayList<Calificaciones> getCalificaciones() {
-        return calificaciones;
+    public int getAtencion() {
+        return atencion;
     }
 
-    public void setCalificaciones(ArrayList<Calificaciones> calificaciones) {
-        this.calificaciones = calificaciones;
+    public void setAtencion(int atencion) {
+        this.atencion = atencion;
+    }
+
+    public int getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(int precio) {
+        this.precio = precio;
+    }
+
+    public int getCalidad() {
+        return calidad;
+    }
+
+    public void setCalidad(int calidad) {
+        this.calidad = calidad;
     }
 }
