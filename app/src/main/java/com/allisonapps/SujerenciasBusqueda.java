@@ -96,7 +96,7 @@ public class SujerenciasBusqueda extends AppCompatActivity {
                     Toast.makeText(SujerenciasBusqueda.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(SujerenciasBusqueda.this, "Producto Id " + ola, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SujerenciasBusqueda.this,LocalesLista.class));
             }
         });
 
