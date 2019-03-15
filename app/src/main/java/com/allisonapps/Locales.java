@@ -2,10 +2,12 @@ package com.allisonapps;
 
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.ArrayList;
+
 public class Locales {
 
     private String nombre;
-    private String decripcion;
+    private String descripcion;
     private String logo;
     private String imagen;
     private boolean garage;
@@ -14,13 +16,14 @@ public class Locales {
     private GeoPoint geoPoint;
     private long mgeusta;
     private String fondoColor;
+    private ArrayList<Calificaciones> calificaciones;
 
     public Locales() {
     }
 
-    public Locales(String nombre, String decripcion, String logo, String imagen, boolean garage, boolean targeta, boolean garantia, GeoPoint geoPoint, long mgeusta, String fondoColor) {
+    public Locales(String nombre, String descripcion, String logo, String imagen, boolean garage, boolean targeta, boolean garantia, GeoPoint geoPoint, long mgeusta, String fondoColor, ArrayList<Calificaciones> calificaciones) {
         this.nombre = nombre;
-        this.decripcion = decripcion;
+        this.descripcion = descripcion;
         this.logo = logo;
         this.imagen = imagen;
         this.garage = garage;
@@ -29,6 +32,7 @@ public class Locales {
         this.geoPoint = geoPoint;
         this.mgeusta = mgeusta;
         this.fondoColor = fondoColor;
+        this.calificaciones = calificaciones;
     }
 
     public String getNombre() {
@@ -39,12 +43,12 @@ public class Locales {
         this.nombre = nombre;
     }
 
-    public String getDecripcion() {
-        return decripcion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDecripcion(String decripcion) {
-        this.decripcion = decripcion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getLogo() {
@@ -109,5 +113,13 @@ public class Locales {
 
     public void setFondoColor(String fondoColor) {
         this.fondoColor = fondoColor;
+    }
+
+    public ArrayList<Calificaciones> getCalificaciones() {
+        return calificaciones;
+    }
+
+    public void setCalificaciones(ArrayList<Calificaciones> calificaciones) {
+        this.calificaciones = calificaciones;
     }
 }

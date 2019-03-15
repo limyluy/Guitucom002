@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLocal.LocalHolder> {
     Context context;
@@ -32,18 +35,20 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         ColorDrawable colorDrawable = new ColorDrawable();
         colorDrawable.setColor(Color.parseColor(color));
 
+        ArrayList<Calificaciones> calificaciones = model.getCalificaciones();
+
         holder.titulo.setText(model.getNombre());
-        holder.descripcion.setText(model.getDecripcion());
-        holder.garaje.setImageResource(model.isGarage()? R.drawable.ic_clear_ : R.drawable.ic_search_black_24dp);
-        holder.tagerta.setImageResource(model.isGarage()? R.drawable.ic_clear_ : R.drawable.ic_search_black_24dp);
-     //   holder.garantia.setImageResource(model.isGarage()? R.drawable.ic_clear_ : R.drawable.ic_search_black_24dp);
+        holder.descripcion.setText(model.getDescripcion());
+        holder.garaje.setImageResource(model.isGarage()? R.drawable.ic_clear_ : R.drawable.ic_local_parking);
+        holder.tagerta.setImageResource(model.isGarage()? R.drawable.ic_clear_ : R.drawable.ic_credit_card);
+        holder.garantia.setImageResource(model.isGarage()? R.drawable.ic_clear_ : R.drawable.ic_verified_user);
         holder.fondo.setBackgroundColor(colorDrawable.getColor());
         Picasso.with(context)
                 .load(model.getLogo())
                 .fit()
                 .centerCrop()
                 .into(holder.logo);
-//        holder.dirigeme.setText(model.getGeoPoint().toString());
+      // holder.dirigeme.setText(model.getGeoPoint().toString());
     }
 
     @NonNull
