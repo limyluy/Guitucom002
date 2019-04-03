@@ -19,6 +19,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allisonapps.Adaptadores.Actividades.VerLocalDetalle;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         edtBusqueda = findViewById(R.id.edt_busar);
         imgBuscar = findViewById(R.id.img_bucar);
         imgBorrar = findViewById(R.id.img_borrar);
+
+        startActivity(new Intent(MainActivity.this, VerLocalDetalle.class));
 
         // seteamos el tipo de fuente de los texview
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/johan.ttf");
