@@ -1,12 +1,17 @@
-package com.allisonapps;
+package com.allisonapps.Adaptadores.Actividades;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.allisonapps.Adaptadores.AdaptadorLocal;
+import com.allisonapps.Locales;
+import com.allisonapps.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -39,6 +44,14 @@ public class LocalesLista extends AppCompatActivity {
         rcvLocales.setHasFixedSize(true);
         rcvLocales.setLayoutManager(new LinearLayoutManager(this));
         rcvLocales.setAdapter(adaptador);
+
+        adaptador.setOnItemClickListener(new AdaptadorLocal.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Intent intent = new Intent(LocalesLista.this,VerLocalDetalle.class);
+                startActivity(intent);
+            }
+        });
 
 
 

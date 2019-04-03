@@ -21,7 +21,8 @@
             android:elevation="5dp"
             android:src="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
 
         <ImageView
@@ -67,7 +68,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:maxLines="3"
-            android:text="descriocopm del local"
+            android:text="descriocion del local"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_card_locales"
@@ -107,7 +108,8 @@
             android:id="@+id/btn_local_favorite"
             android:layout_width="38dp"
             android:layout_height="32dp"
-            android:layout_marginBottom="4dp"
+
+            android:layout_marginBottom="8dp"
             android:background="@color/colorTransparente"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_card_locales"
@@ -223,6 +225,18 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/txt_num_recomendado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="10dp"
+            android:text="0"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_local_favorite" />
 
     </android.support.constraint.ConstraintLayout>
 

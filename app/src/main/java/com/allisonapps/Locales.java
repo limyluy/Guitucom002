@@ -2,41 +2,52 @@ package com.allisonapps;
 
 import com.google.firebase.firestore.GeoPoint;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Locales {
 
     private String nombre;
+    private String direccion;
+    private String telefono;
     private String descripcion;
-    private String logo;
-    private String imagen;
-    private boolean garage;
-    private boolean targeta;
-    private boolean garantia;
-    private GeoPoint geoPoint;
-    private long mgeusta;
-    private String fondoColor;
+    private GeoPoint ubicacion;
     private int atencion;
-    private int precio;
     private int calidad;
+    private int precio;
+    private boolean tarjeta;
+    private boolean garaje;
+    private boolean garantia;
+    private String imgLocal;
+    private String imgLogo;
+    private long numRecomendado;
+    private Boolean actualizado;
+    private Boolean ofertas;
+    private List<String> etiquetas;
+    private String color;
 
     public Locales() {
     }
 
-    public Locales(String nombre, String descripcion, String logo, String imagen, boolean garage, boolean targeta, boolean garantia, GeoPoint geoPoint, long mgeusta, String fondoColor, int atencion, int precio, int calidad) {
+
+    public Locales(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, Boolean ofertas, List<String> etiquetas, String color) {
         this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
         this.descripcion = descripcion;
-        this.logo = logo;
-        this.imagen = imagen;
-        this.garage = garage;
-        this.targeta = targeta;
-        this.garantia = garantia;
-        this.geoPoint = geoPoint;
-        this.mgeusta = mgeusta;
-        this.fondoColor = fondoColor;
+        this.ubicacion = ubicacion;
         this.atencion = atencion;
-        this.precio = precio;
         this.calidad = calidad;
+        this.precio = precio;
+        this.tarjeta = tarjeta;
+        this.garaje = garaje;
+        this.garantia = garantia;
+        this.imgLocal = imgLocal;
+        this.imgLogo = imgLogo;
+        this.numRecomendado = numRecomendado;
+        this.actualizado = actualizado;
+        this.ofertas = ofertas;
+        this.etiquetas = etiquetas;
+        this.color = color;
     }
 
     public String getNombre() {
@@ -47,6 +58,22 @@ public class Locales {
         this.nombre = nombre;
     }
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -55,68 +82,12 @@ public class Locales {
         this.descripcion = descripcion;
     }
 
-    public String getLogo() {
-        return logo;
+    public GeoPoint getUbicacion() {
+        return ubicacion;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public boolean isGarage() {
-        return garage;
-    }
-
-    public void setGarage(boolean garage) {
-        this.garage = garage;
-    }
-
-    public boolean isTargeta() {
-        return targeta;
-    }
-
-    public void setTargeta(boolean targeta) {
-        this.targeta = targeta;
-    }
-
-    public boolean isGarantia() {
-        return garantia;
-    }
-
-    public void setGarantia(boolean garantia) {
-        this.garantia = garantia;
-    }
-
-    public GeoPoint getGeoPoint() {
-        return geoPoint;
-    }
-
-    public void setGeoPoint(GeoPoint geoPoint) {
-        this.geoPoint = geoPoint;
-    }
-
-    public long getMgeusta() {
-        return mgeusta;
-    }
-
-    public void setMgeusta(long mgeusta) {
-        this.mgeusta = mgeusta;
-    }
-
-    public String getFondoColor() {
-        return fondoColor;
-    }
-
-    public void setFondoColor(String fondoColor) {
-        this.fondoColor = fondoColor;
+    public void setUbicacion(GeoPoint ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public int getAtencion() {
@@ -127,6 +98,14 @@ public class Locales {
         this.atencion = atencion;
     }
 
+    public int getCalidad() {
+        return calidad;
+    }
+
+    public void setCalidad(int calidad) {
+        this.calidad = calidad;
+    }
+
     public int getPrecio() {
         return precio;
     }
@@ -135,11 +114,83 @@ public class Locales {
         this.precio = precio;
     }
 
-    public int getCalidad() {
-        return calidad;
+    public boolean isTarjeta() {
+        return tarjeta;
     }
 
-    public void setCalidad(int calidad) {
-        this.calidad = calidad;
+    public void setTarjeta(boolean tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    public boolean isGaraje() {
+        return garaje;
+    }
+
+    public void setGaraje(boolean garaje) {
+        this.garaje = garaje;
+    }
+
+    public boolean isGarantia() {
+        return garantia;
+    }
+
+    public void setGarantia(boolean garantia) {
+        this.garantia = garantia;
+    }
+
+    public String getImgLocal() {
+        return imgLocal;
+    }
+
+    public void setImgLocal(String imgLocal) {
+        this.imgLocal = imgLocal;
+    }
+
+    public String getImgLogo() {
+        return imgLogo;
+    }
+
+    public void setImgLogo(String imgLogo) {
+        this.imgLogo = imgLogo;
+    }
+
+    public long getNumRecomendado() {
+        return numRecomendado;
+    }
+
+    public void setNumRecomendado(long numRecomendado) {
+        this.numRecomendado = numRecomendado;
+    }
+
+    public Boolean getActualizado() {
+        return actualizado;
+    }
+
+    public void setActualizado(Boolean actualizado) {
+        this.actualizado = actualizado;
+    }
+
+    public Boolean getOfertas() {
+        return ofertas;
+    }
+
+    public void setOfertas(Boolean ofertas) {
+        this.ofertas = ofertas;
+    }
+
+    public List<String> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(List<String> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
