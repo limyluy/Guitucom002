@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -53,11 +54,12 @@ import io.grpc.okhttp.internal.Util;
 
 public class VerLocalDetalle extends AppCompatActivity {
 
+    // nombre de la collencion de firebase
     private static final String PRODUCTOS = "productos";
-    private static final String DisplayName = "Aaaaazzafasd";
-    private static final String MobileNumber = "123132132";
 
+// en easta actividad tratamos de enviar un mensaje a wasapt agregando nosotro el texto y tambien el contacto si el usuario lo permite
 
+    //variables para llenar el recycler falta especificar query
     private RecyclerView rcvVerProducto;
     private VerDetalleAdaptador adaptador;
     private FirebaseFirestore db;
@@ -66,6 +68,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     private CardView crvVerLocal;
     private ImageView imgGradient;
 
+    //variables que se rescataran de la anterior actividad
     private String nombre;
     private String descripcion;
     private String imglogo;
@@ -85,6 +88,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         crvVerLocal = findViewById(R.id.crv_ver_local_detalle);
         imgGradient = findViewById(R.id.img_degrade_ver_local);
+        crvVerLocal = findViewById(R.id.crv_ver_local_detalle);
 
         db = FirebaseFirestore.getInstance();
         context = getApplicationContext();
@@ -111,6 +115,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         actualizado = getIntent().getBooleanExtra("actualizado", true);
     }
 
+    //meetodo para llenar recyler y dar accin al boton mas detalle
     private void llenarRecyclerProducto() {
 
         rcvVerProducto.setHasFixedSize(true);
@@ -131,68 +136,108 @@ public class VerLocalDetalle extends AppCompatActivity {
         adaptador = new VerDetalleAdaptador(options, context);
         rcvVerProducto.setAdapter(adaptador);
 
+
         adaptador.setOnItemClickListener(new AdaptadorLocal.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                // Productos productos = documentSnapshot.toObject(Productos.class);
-                telefono = "573164787515";
-                andirContacto();
-                //Toast.makeText(context, telefono + productos.getNombre(), Toast.LENGTH_SHORT).show();
+
+                //los metodos funcionan correctamente
+                //falta integrar pedir permiso y acomodarlo para que se haga mas fluidamente
+                //primero hay que crear el contacto en un intent y despues en otro enviar el mensaje
+
+                if (verduplicado(telefono)){
+                    enviaMsjContacto(telefono);
+                }else {
+                    //falta pedir permiso para agregar contacto
+
+                    crearContacto(telefono,nombre);                }
+
             }
         });
 
 
     }
 
-    private void andirContacto() {
+    private boolean verduplicado(String telefono) {
+        // Get query phone contacts cursor object.
+        Uri readContactsUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        Cursor c = getContentResolver().query(readContactsUri, null, null, null, null);
 
-        ArrayList < ContentProviderOperation > ops = new ArrayList < ContentProviderOperation > ();
+        ArrayList<String> lista = new ArrayList<>();
 
-        ops.add(ContentProviderOperation.newInsert(
-                ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-                .build());
 
-        if (DisplayName != null) {
-            ops.add(ContentProviderOperation.newInsert(
-                    ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                    .withValue(
-                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-                            DisplayName).build());
-        }
+        if (c != null) {
 
-        //------------------------------------------------------ Mobile Number
-        if (MobileNumber != null) {
-            ops.add(ContentProviderOperation.
-                    newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                    .withValue(ContactsContract.Data.MIMETYPE,
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                    .build());
-        }
+            int i = c.getColumnIndexOrThrow((ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-        try {
-            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            while (c.moveToNext()) {
+
+                String usuario = c.getString(i);
+                if (usuario.equals(telefono)) {
+                    Log.e("numero allado", usuario);
+                    return true;
+                }
+
+
+            }
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "No hay nada :(", Toast.LENGTH_LONG).show();
         }
 
 
-
+        return false;
 
     }
 
 
+    private void crearContacto(String telefono , String nombre) {
 
-    private void openWhatsApp() {
+
+            ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+
+            ops.add(ContentProviderOperation.newInsert(
+                    ContactsContract.RawContacts.CONTENT_URI)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                    .build());
+
+            if (nombre != null) {
+                ops.add(ContentProviderOperation.newInsert(
+                        ContactsContract.Data.CONTENT_URI)
+                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                        .withValue(ContactsContract.Data.MIMETYPE,
+                                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                        .withValue(
+                                ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                                nombre).build());
+            }
+
+
+            if (telefono != null) {
+                ops.add(ContentProviderOperation.
+                        newInsert(ContactsContract.Data.CONTENT_URI)
+                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                        .withValue(ContactsContract.Data.MIMETYPE,
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, telefono)
+                        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                                ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                        .build());
+            }
+
+            try {
+                getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(context, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+
+    }
+
+    // lo envia si tenemos el contacto icnluido el mensaje
+    private void enviaMsjContacto(String telefono) {
 
         boolean isWhatsappInstalled = whatsappInstalledOrNot("com.whatsapp");
         if (isWhatsappInstalled) {
@@ -201,7 +246,7 @@ public class VerLocalDetalle extends AppCompatActivity {
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "ollllla");
-                sendIntent.putExtra("jid", "573164787555" + "@s.whatsapp.net");
+                sendIntent.putExtra("jid", "573183088222" + "@s.whatsapp.net");
                 // phone number without "+" prefix
                 sendIntent.setPackage("com.whatsapp");
                 startActivity(sendIntent);
@@ -216,6 +261,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         }
     }
 
+// metodo para saber si wassap esta isntalado
     private boolean whatsappInstalledOrNot(String uri) {
         PackageManager pm = context.getPackageManager();
         boolean app_installed = false;
@@ -228,15 +274,15 @@ public class VerLocalDetalle extends AppCompatActivity {
         return app_installed;
     }
 
-    // no anexa el mensaje
-    public void enviaMensajeWhatsApp() {
+    // metodo para enviar wassap sin agregar contacto de esta forma no anexa mensaje
+    public void enviaMsjNoContacto(String telefono) {
         PackageManager pm = getPackageManager();
         try {
             Intent waIntent = new Intent("android.intent.action.MAIN");
             waIntent.setAction(Intent.ACTION_SEND);
             waIntent.setType("text/plain");
             waIntent.putExtra(Intent.EXTRA_TEXT, "sfasdfasdf");
-            waIntent.putExtra("jid", "573164787515" + "@s.whatsapp.net");
+            waIntent.putExtra("jid", telefono + "@s.whatsapp.net");
             waIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
             PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
             waIntent.setPackage("com.whatsapp");
