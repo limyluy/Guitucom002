@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.allisonapps.Locales;
+import com.allisonapps.Entidades.Locales;
 import com.allisonapps.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

@@ -1,4 +1,4 @@
-package com.allisonapps;
+package com.allisonapps.Entidades;
 
 import com.google.firebase.firestore.GeoPoint;
 

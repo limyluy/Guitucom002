@@ -17,7 +17,7 @@ import com.algolia.instantsearch.core.helpers.Searcher;
 import com.algolia.instantsearch.ui.helpers.InstantSearch;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport;
 import com.algolia.instantsearch.ui.views.Hits;
-import com.allisonapps.Adaptadores.Actividades.LocalesLista;
+import com.allisonapps.Actividades.LocalesLista;
 
 import org.json.JSONObject;
 

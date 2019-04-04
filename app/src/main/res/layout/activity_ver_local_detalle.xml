@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Adaptadores.Actividades.VerLocalDetalle">
+    tools:context=".Actividades.VerLocalDetalle">
 
     <android.support.v7.widget.CardView
         android:id="@+id/crv_ver_local_detalle"
@@ -70,7 +70,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_ver_locales_detalle"
         android:layout_width="match_parent"
-        android:layout_height="344dp"
+        android:layout_height="399dp"
+        android:background="@color/colorTransparente"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

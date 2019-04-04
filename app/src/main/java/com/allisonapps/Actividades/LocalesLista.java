@@ -1,4 +1,4 @@
-package com.allisonapps.Adaptadores.Actividades;
+package com.allisonapps.Actividades;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.allisonapps.Adaptadores.AdaptadorLocal;
-import com.allisonapps.Locales;
+import com.allisonapps.Entidades.Locales;
 import com.allisonapps.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -48,7 +48,16 @@ public class LocalesLista extends AppCompatActivity {
         adaptador.setOnItemClickListener(new AdaptadorLocal.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Locales local = documentSnapshot.toObject(Locales.class);
                 Intent intent = new Intent(LocalesLista.this,VerLocalDetalle.class);
+                intent.putExtra("nombre",local.getNombre());
+                intent.putExtra("imglocal",local.getImgLocal());
+                intent.putExtra("imglogo",local.getImgLogo());
+                intent.putExtra("telefono",local.getTelefono());
+                intent.putExtra("color",local.getColor());
+                intent.putExtra("ubicasion",local.getUbicacion().toString());
+                intent.putExtra("direccion",local.getDireccion());
+                intent.putExtra("actualizado",local.getActualizado());
                 startActivity(intent);
             }
         });

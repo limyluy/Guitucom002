@@ -2,24 +2,17 @@ package com.allisonapps;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.allisonapps.Adaptadores.Actividades.VerLocalDetalle;
+import com.allisonapps.Actividades.VerLocalDetalle;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         // linea para dar soporte a la creacion de graficos con vectores
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+
+
         // encontrar los witget de la activity main
         txtGuiatu = findViewById(R.id.txt_guiaturistica);
         txtMascien = findViewById(R.id.txt_mascien);
@@ -49,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         imgBuscar = findViewById(R.id.img_bucar);
         imgBorrar = findViewById(R.id.img_borrar);
 
-        startActivity(new Intent(MainActivity.this, VerLocalDetalle.class));
+
 
         // seteamos el tipo de fuente de los texview
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/johan.ttf");
