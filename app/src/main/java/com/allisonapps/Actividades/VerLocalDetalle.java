@@ -12,6 +12,7 @@ import android.content.OperationApplicationException;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -42,6 +43,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -66,6 +69,11 @@ public class VerLocalDetalle extends AppCompatActivity {
     private Context context;
 
     private CardView crvVerLocal;
+
+    private CardView crvVerLocalDetalle;
+    private CardView crvBotonRedondo;
+    private ImageView imgLogoLocal;
+    private ImageView imgVerLocal;
     private ImageView imgGradient;
 
     //variables que se rescataran de la anterior actividad
@@ -87,8 +95,14 @@ public class VerLocalDetalle extends AppCompatActivity {
         setContentView(R.layout.activity_ver_local_detalle);
 
         crvVerLocal = findViewById(R.id.crv_ver_local_detalle);
-        imgGradient = findViewById(R.id.img_degrade_ver_local);
-        crvVerLocal = findViewById(R.id.crv_ver_local_detalle);
+        crvBotonRedondo = findViewById(R.id.crv_btn_redondo_ver_local);
+        crvVerLocalDetalle = findViewById(R.id.crv_ver_local_detalle);
+        imgGradient = findViewById(R.id.img_gradient_ver_local);
+        imgVerLocal = findViewById(R.id.img_local_ver_local);
+        imgLogoLocal = findViewById(R.id.img_logo_local_ver_detalle);
+
+
+
 
         db = FirebaseFirestore.getInstance();
         context = getApplicationContext();
@@ -98,7 +112,18 @@ public class VerLocalDetalle extends AppCompatActivity {
 
 
         rescatarVariables();
+        llenarLocal();
         llenarRecyclerProducto();
+
+
+    }
+
+    private void llenarLocal() {
+
+        Picasso.with(context).load(imglocal).into(imgVerLocal);
+        Picasso.with(context).load(imglogo).into(imgLogoLocal);
+        crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(color));
+        crvBotonRedondo.setCardBackgroundColor(Integer.parseInt(color));
 
 
     }
