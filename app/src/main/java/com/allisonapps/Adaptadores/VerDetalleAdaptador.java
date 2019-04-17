@@ -35,11 +35,14 @@ public class VerDetalleAdaptador extends FirestoreRecyclerAdapter<Productos, Ver
     protected void onBindViewHolder(@NonNull VerDetalleViewHolder holder, int position, @NonNull final Productos model) {
 
         holder.nombre.setText(model.getNombre());
-        holder.descripcion.setText(model.getDescripcion());
+//        holder.descripcion.setText(model.getDescripcion());
         holder.marca.setText(model.getMarca());
         holder.desAdicional.setText(model.getDesAdicional());
-        holder.infAdicional.setText(model.getInfAdicional());
-        Picasso.with(context).load(model.getImgProducto()).into(holder.imgProducto);
+//        holder.infAdicional.setText(model.getInfAdicional());
+        Picasso.with(context).load(model.getImgProducto())
+                .fit()
+                .centerInside()
+                .into(holder.imgProducto);
 
 
 
@@ -69,10 +72,10 @@ public class VerDetalleAdaptador extends FirestoreRecyclerAdapter<Productos, Ver
             super(itemView);
 
             nombre = itemView.findViewById(R.id.txt_nom_producto_ver_local);
-            descripcion = itemView.findViewById(R.id.txt_des_producto_ver_local);
+         //   descripcion = itemView.findViewById(R.id.txt_des_producto_ver_local);
             marca = itemView.findViewById(R.id.txt_mar_producto_ver_local);
             imgProducto = itemView.findViewById(R.id.img_producto_card_item_ver_local);
-            infAdicional = itemView.findViewById(R.id.txt_desadi_producto_ver_local);
+         //   infAdicional = itemView.findViewById(R.id.txt_desadi_producto_ver_local);
             desAdicional = itemView.findViewById(R.id.txt_esp_producto_ver_local);
             btnMasInfo = itemView.findViewById(R.id.btn_ver_producto_local);
 

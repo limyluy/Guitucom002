@@ -120,7 +120,14 @@ public class VerLocalDetalle extends AppCompatActivity {
 
     private void llenarLocal() {
 
-        Picasso.with(context).load(imglocal).into(imgVerLocal);
+        // metodo para ajustar .centerCrop()
+        Log.e("weith", String.valueOf(imgVerLocal.getMaxHeight()));
+        Picasso.with(context).load(imglocal)
+
+                .resize(3000,1560)
+
+
+                .into(imgVerLocal);
         Picasso.with(context).load(imglogo).into(imgLogoLocal);
         crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(color));
         crvBotonRedondo.setCardBackgroundColor(Integer.parseInt(color));

@@ -45,7 +45,7 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         holder.numAtencion.setText(String.valueOf(model.getAtencion()));
         holder.numCalidad.setText(String.valueOf(model.getCalidad()));
         holder.numPrecio.setText(String.valueOf(model.getPrecio()));
-        Picasso.with(context).load(model.getImgLogo()).into(holder.logo);
+        Picasso.with(context).load(model.getImgLogo()).placeholder(R.drawable.ic_cloud_of).into(holder.logo);
         holder.numRecomendado.setText(String.valueOf(model.getNumRecomendado()));
     }
 

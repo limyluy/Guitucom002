@@ -9,7 +9,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/crv_ver_local_detalle"
         android:layout_width="match_parent"
-        android:layout_height="264dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,24 +22,25 @@
                 android:id="@+id/img_local_ver_local"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:background="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:adjustViewBounds="true"/>
 
             <ImageView
                 android:id="@+id/img_gradient_ver_local"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/gradien_ver_local"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,13 +59,17 @@
         android:id="@+id/crv_btn_redondo_ver_local"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="210dp"
+        android:layout_marginTop="245dp"
         android:layout_marginEnd="32dp"
         app:cardCornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:id="@+id/img_logo_local_ver_detalle"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
