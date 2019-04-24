@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/menu_seleccion_list_locales"
+        android:icon="@drawable/ic_view_list_black_24dp"
+        android:title="menus"
+        app:showAsAction="ifRoom|collapseActionView"
+
+        >
+
+        <menu>
+            <item android:id="@+id/menu_calidad"
+                android:title="Calidad"/>
+            <item android:id="@+id/menu_atencion"
+                android:title="Atencion"/>
+            <item android:id="@+id/menu_precio"
+                android:title="Precio"/>
+        </menu>
+
+
+    </item>
+
+    <item
+        android:id="@+id/menu_main_locales"
+        android:icon="@drawable/ic_menus"
+        android:title="menus"
+        app:showAsAction="ifRoom|collapseActionView"
+
+        />
+
+
+
+
+
+</menu>

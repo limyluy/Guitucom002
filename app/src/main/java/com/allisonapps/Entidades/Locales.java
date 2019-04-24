@@ -20,8 +20,8 @@ public class Locales {
     private String imgLocal;
     private String imgLogo;
     private long numRecomendado;
-    private Boolean actualizado;
-    private Boolean ofertas;
+    private boolean actualizado;
+    private boolean ofertas;
     private List<String> etiquetas;
     private String color;
 
@@ -162,19 +162,19 @@ public class Locales {
         this.numRecomendado = numRecomendado;
     }
 
-    public Boolean getActualizado() {
+    public boolean isActualizado() {
         return actualizado;
     }
 
-    public void setActualizado(Boolean actualizado) {
+    public void setActualizado(boolean actualizado) {
         this.actualizado = actualizado;
     }
 
-    public Boolean getOfertas() {
+    public boolean isOfertas() {
         return ofertas;
     }
 
-    public void setOfertas(Boolean ofertas) {
+    public void setOfertas(boolean ofertas) {
         this.ofertas = ofertas;
     }
 

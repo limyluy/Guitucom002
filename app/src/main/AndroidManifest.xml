@@ -15,11 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Actividades.VerLocalDetalle"></activity>
-        <activity android:name=".Actividades.LocalesLista" />
+        <activity android:name=".Actividades.Mapa"></activity>
+        <activity
+            android:name=".Actividades.VerLocalDetalle"
+            android:parentActivityName=".Actividades.LocalesLista" />
+        <activity
+            android:name=".Actividades.LocalesLista"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SujerenciasBusqueda"
             android:configChanges="screenSize|orientation"
+            android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".MainActivity"

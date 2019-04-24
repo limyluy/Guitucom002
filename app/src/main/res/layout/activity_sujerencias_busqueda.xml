@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SujerenciasBusqueda">
+    tools:context=".SujerenciasBusqueda"
+    android:layout_margin="5dp">
 
 
     <android.support.v7.widget.Toolbar
@@ -24,16 +25,27 @@
             android:layout_height="match_parent"
             >
 
+            <ImageView
+                android:id="@+id/img_ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+
 
             <EditText
                 android:id="@+id/txt_clave"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nueva Busqueda"
                 android:maxLines="1"
                 android:textSize="18dp"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"
+                android:layout_toRightOf="@+id/img_ic_back"
+                android:layout_toLeftOf="@+id/img_bucarnuevo"
+                android:layout_centerVertical="true"
                 />
 
             <ImageView

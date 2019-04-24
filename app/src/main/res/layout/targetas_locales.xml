@@ -15,6 +15,16 @@
 
 
         <ImageView
+            android:id="@+id/img_ofertas_local_card"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:elevation="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_ofertas" />
+
+
+        <ImageView
             android:id="@+id/img_card_logo"
             android:layout_width="120dp"
             android:layout_height="83dp"
@@ -156,27 +166,17 @@
 
                 <ImageView
                     android:id="@+id/img1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginRight="5dp"
-                    app:srcCompat="@drawable/ic_star_" />
+                    app:srcCompat="@drawable/ic_atencion" />
 
-                <TextView
-                    android:id="@+id/txt_num_atencion"
-                    android:layout_width="wrap_content"
+                <ProgressBar
+                    android:id="@+id/prb_atencion"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="#ffffff" />
-
-                <TextView
-                    android:id="@+id/txt_atencion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Atencion"
-                    android:textColor="#ffffff" />
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
             </LinearLayout>
 
@@ -187,28 +187,17 @@
 
                 <ImageView
                     android:id="@+id/img2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginRight="5dp"
-                    android:textColor="#ffffff"
-                    app:srcCompat="@drawable/ic_star_" />
+                    app:srcCompat="@drawable/ic_calidad" />
 
-                <TextView
-                    android:id="@+id/txt_num_calidad"
-                    android:layout_width="wrap_content"
+                <ProgressBar
+                    android:id="@+id/prb_calidad"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="#ffffff" />
-
-                <TextView
-                    android:id="@+id/txt_calidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Calidad"
-                    android:textColor="#ffffff" />
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
             </LinearLayout>
 
@@ -221,27 +210,18 @@
                 <ImageView
 
                     android:id="@+id/img3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginRight="5dp"
-                    app:srcCompat="@drawable/ic_star_" />
+                    app:srcCompat="@drawable/ic_precio" />
 
-                <TextView
-                    android:id="@+id/txt_num_precio"
-                    android:layout_width="wrap_content"
+                <ProgressBar
+                    android:id="@+id/prb_precio"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="#ffffff" />
-
-                <TextView
-                    android:id="@+id/txt_precio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="Precio"
-                    android:textColor="#ffffff" />
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    />
 
             </LinearLayout>
 
@@ -258,6 +238,16 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_local_favorite" />
+
+        <TextView
+            android:id="@+id/txt_actualizado_locales_card"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            />
 
     </android.support.constraint.ConstraintLayout>
 

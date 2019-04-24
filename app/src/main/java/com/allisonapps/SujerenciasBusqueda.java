@@ -45,7 +45,7 @@ public class SujerenciasBusqueda extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sujerencias_busqueda);
-        getSupportActionBar();
+        getSupportActionBar().hide();
 
         // encontramos los witgets del activity SujerenciasBusqueda
         tooSuperior = findViewById(R.id.barra_busqueda);
@@ -87,13 +87,16 @@ public class SujerenciasBusqueda extends AppCompatActivity {
             @Override
             public void onItemClick(RecyclerView recyclerView, int position, View v) {
                 JSONObject hit = hits.get(position);
-                String ola = (String) hit.opt("objectID");
+                String nombre = (String) hit.opt("nombre");
 
-                if (ola == null) {
+
+                if (nombre == null) {
                     Toast.makeText(SujerenciasBusqueda.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                startActivity(new Intent(SujerenciasBusqueda.this, LocalesLista.class));
+                Intent  intent = new Intent(SujerenciasBusqueda.this, LocalesLista.class);
+                intent.putExtra("nombre",nombre);
+                startActivity(intent);
             }
         });
 
@@ -107,7 +110,7 @@ public class SujerenciasBusqueda extends AppCompatActivity {
             progresbarr();
         } else {
             Toast.makeText(this, "No es reconoce palabra", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(SujerenciasBusqueda.this, MainActivity.class));
+        startActivity(new Intent(SujerenciasBusqueda.this, MainActivity.class));
         }
     }
 
