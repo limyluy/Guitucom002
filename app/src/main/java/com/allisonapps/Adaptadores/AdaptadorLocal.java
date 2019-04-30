@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,12 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLocal.LocalHolder> {
     Context context;
     AdaptadorLocal.OnItemClickListener listener;
+    private ArrayList<Locales> locales = new ArrayList<>();
 
     public AdaptadorLocal(@NonNull FirestoreRecyclerOptions<Locales> options, Context context) {
         super(options);
@@ -32,6 +36,10 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
 
     @Override
     protected void onBindViewHolder(@NonNull LocalHolder holder, int position, @NonNull Locales model) {
+
+        locales.add(model);
+        Log.e("pasado",locales.get(position).getNombre());
+
         String color = model.getColor();
 
         holder.atencion.setMax(5);
@@ -65,6 +73,10 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
     public LocalHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(context).inflate(R.layout.targetas_locales,viewGroup,false);
         return new LocalHolder(v);
+    }
+
+    public ArrayList<Locales> obtenerLocales(){
+        return locales;
     }
 
     class LocalHolder extends RecyclerView.ViewHolder {

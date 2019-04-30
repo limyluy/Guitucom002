@@ -1,6 +1,7 @@
 package com.allisonapps.Actividades;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -18,12 +19,15 @@ import android.widget.Toast;
 
 import com.allisonapps.Adaptadores.AdaptadorLocal;
 import com.allisonapps.Entidades.Locales;
+import com.allisonapps.MapsActivity;
 import com.allisonapps.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
 
 
 public class LocalesLista extends AppCompatActivity {
@@ -49,7 +53,7 @@ public class LocalesLista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locales_lista);
 
-        String nombre = getIntent().getStringExtra("nombre");
+        final String nombre = getIntent().getStringExtra("nombre");
         getSupportActionBar().setTitle("Aqui Encontraras " + nombre);
 
         fabMapa = findViewById(R.id.fab_mapa_list_locales);
@@ -57,7 +61,13 @@ public class LocalesLista extends AppCompatActivity {
         fabMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activarMapas();
+
+                ArrayList<Locales> arrayList = adaptador.obtenerLocales();
+                Intent intent = new Intent(LocalesLista.this,MapsActivity.class);
+                intent.putExtra("nombre",nombre);
+                MapsActivity.localesMapas = arrayList;
+                startActivity(intent);
+
             }
         });
 
@@ -68,10 +78,7 @@ public class LocalesLista extends AppCompatActivity {
         llenarrecycler();
     }
 
-    private void activarMapas() {
 
-
-    }
 
     private void llenarrecycler() {
         Query query = reference.orderBy("nombre", Query.Direction.DESCENDING);
@@ -101,6 +108,7 @@ public class LocalesLista extends AppCompatActivity {
                 intent.putExtra("direccion", local.getDireccion());
                 intent.putExtra("actualizado", local.isActualizado());
                 startActivity(intent);
+
             }
         });
 

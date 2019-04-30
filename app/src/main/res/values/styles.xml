@@ -41,9 +41,7 @@
 
     <style name="AppTheme.bar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorTransparente</item>
-
-
-
     </style>
+
 
 </resources>
