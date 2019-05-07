@@ -107,6 +107,7 @@ public class LocalesLista extends AppCompatActivity {
                 intent.putExtra("ubicasion", local.getUbicacion().toString());
                 intent.putExtra("direccion", local.getDireccion());
                 intent.putExtra("actualizado", local.isActualizado());
+
                 startActivity(intent);
 
             }

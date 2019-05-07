@@ -13,6 +13,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -32,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allisonapps.Adaptadores.AdaptadorLocal;
@@ -78,6 +80,9 @@ public class VerLocalDetalle extends AppCompatActivity {
     private ImageView imgLogoLocal;
     private ImageView imgVerLocal;
     private ImageView imgGradient;
+    private TextView txtDireccion;
+    private TextView txtTelefono;
+
 
     //variables que se rescataran de la anterior actividad
     private String nombre;
@@ -88,8 +93,10 @@ public class VerLocalDetalle extends AppCompatActivity {
     private String color;
     private String ubicacion;
     private String direccion;
+
     private boolean actualizado;
     private Activity activity;
+    private String PalabraBuscada;
 
 
     @Override
@@ -100,12 +107,21 @@ public class VerLocalDetalle extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_back);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        getSupportActionBar().setTitle("");
+
+
         crvVerLocal = findViewById(R.id.crv_ver_local_detalle);
-        crvBotonRedondo = findViewById(R.id.crv_btn_redondo_ver_local);
+        //crvBotonRedondo = findViewById(R.id.crv_btn_redondo_ver_local);
         crvVerLocalDetalle = findViewById(R.id.crv_ver_local_detalle);
         imgGradient = findViewById(R.id.img_gradient_ver_local);
         imgVerLocal = findViewById(R.id.img_local_ver_local);
         imgLogoLocal = findViewById(R.id.img_logo_local_ver_detalle);
+        txtDireccion = findViewById(R.id.txt_dir_local_detalle);
+        txtTelefono = findViewById(R.id.txt_tel_local_detalle);
+
 
 
 
@@ -136,7 +152,11 @@ public class VerLocalDetalle extends AppCompatActivity {
                 .into(imgVerLocal);
         Picasso.with(context).load(imglogo).into(imgLogoLocal);
         crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(color));
-        crvBotonRedondo.setCardBackgroundColor(Integer.parseInt(color));
+
+        txtDireccion.setText(direccion);
+        txtTelefono.setText(telefono);
+
+
 
 
     }
@@ -151,6 +171,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         ubicacion = getIntent().getStringExtra("ubicasion");
         direccion = getIntent().getStringExtra("direccion");
         actualizado = getIntent().getBooleanExtra("actualizado", true);
+
     }
 
     //meetodo para llenar recyler y dar accin al boton mas detalle

@@ -120,7 +120,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_sujerencias">
+        app:layout_constraintTop_toBottomOf="@+id/txt_sujerencias"
+        android:background="@color/colorTextPrincipal"
+        >
 
     </com.algolia.instantsearch.ui.views.Hits>
 
