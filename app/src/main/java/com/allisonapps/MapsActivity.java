@@ -86,11 +86,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             MarkerOptions marker = new MarkerOptions().title(locale.getNombre())
                     .position(ubicacion)
                     .snippet("Aqui Encuentras "+ nombre)
-                   // .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-                    ;
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
 
             mMap.addMarker(marker);
         }
+
+
 
 
 

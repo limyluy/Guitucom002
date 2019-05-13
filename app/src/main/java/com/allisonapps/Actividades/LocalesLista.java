@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ public class LocalesLista extends AppCompatActivity {
 
     // widgets
     private FloatingActionButton fabMapa;
+    private String nombre;
 
 
 
@@ -53,7 +55,8 @@ public class LocalesLista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locales_lista);
 
-        final String nombre = getIntent().getStringExtra("nombre");
+        nombre = getIntent().getStringExtra("nombre");
+        Log.e("nombre",nombre);
         getSupportActionBar().setTitle("Aqui Encontraras " + nombre);
 
         fabMapa = findViewById(R.id.fab_mapa_list_locales);
@@ -81,7 +84,12 @@ public class LocalesLista extends AppCompatActivity {
 
 
     private void llenarrecycler() {
-        Query query = reference.orderBy("nombre", Query.Direction.DESCENDING);
+
+        Query query = reference.whereArrayContains("productos",nombre);
+
+
+
+
 
         FirestoreRecyclerOptions<Locales> options = new FirestoreRecyclerOptions.Builder<Locales>()
                 .setQuery(query, Locales.class)
