@@ -8,5 +8,7 @@
     <color name="colorTextPrincipal">#534377</color>
     <color name="colorActualizado">#178B00</color>
     <color name="colorNoActualizado">#A70808</color>
+    <color name="colorBotones">#B9FFF8F8</color>
+
 
 </resources>

@@ -59,6 +59,7 @@ public class SujerenciasBusqueda extends AppCompatActivity {
         buscarpalabraAlgolia();
 
 
+
         // para que el seacher trabaje por medio del edidtext
         edtClave.setOnKeyListener(new View.OnKeyListener() {
             @Override

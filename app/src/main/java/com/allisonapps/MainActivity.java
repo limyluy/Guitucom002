@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtMascien;
     private EditText edtBusqueda;
     private ImageView imgBuscar;
-    private ImageView imgBorrar;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         txtMascien = findViewById(R.id.txt_mascien);
         edtBusqueda = findViewById(R.id.edt_busar);
         imgBuscar = findViewById(R.id.img_bucar);
-        imgBorrar = findViewById(R.id.img_borrar);
+
 
 
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // para que el seacher trabae por medio del edidtext
+        // para que el seacher trabaje por medio del edidtext
         edtBusqueda.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

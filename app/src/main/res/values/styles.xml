@@ -20,6 +20,8 @@
     </style>
 
 
+
+
     // Style que se utiliza para realizar el SplasScrem. pendiente diseño
     <style name="AppTheme.SplashScreem" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
