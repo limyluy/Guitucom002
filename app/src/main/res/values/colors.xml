@@ -9,6 +9,13 @@
     <color name="colorActualizado">#178B00</color>
     <color name="colorNoActualizado">#A70808</color>
     <color name="colorBotones">#B9FFF8F8</color>
+    <color name="colorIconos">#CE200C</color>
+    <color name="colorHint">#FFFFFF</color>
+    <color name="colorTextoSecudario">#D8213AA8</color>
+    <color name="colorTextoNegro">#D8353434</color>
+    <color name="colorTextoGris">#D8B9B7B7</color>
+    <color name="colorNegro">#000000</color>
+    <color name="colorWassp"> #00bb2d</color>
 
 
 </resources>

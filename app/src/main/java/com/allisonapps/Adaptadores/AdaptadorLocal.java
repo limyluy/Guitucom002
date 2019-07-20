@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.allisonapps.Entidades.Locales;
 import com.allisonapps.R;
@@ -35,7 +36,7 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
 
 
     @Override
-    protected void onBindViewHolder(@NonNull LocalHolder holder, int position, @NonNull Locales model) {
+    protected void onBindViewHolder(@NonNull LocalHolder holder, int position, @NonNull final Locales model) {
 
         locales.add(model);
         Log.e("pasado",locales.get(position).getNombre());
@@ -55,17 +56,42 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
 
         holder.titulo.setText(model.getNombre());
         holder.descripcion.setText(model.getDescripcion());
-        holder.garaje.setImageResource(model.isGaraje()?R.drawable.ic_local_parking : R.drawable.ic_clear_ );
-        holder.tagerta.setImageResource(model.isTarjeta()?R.drawable.ic_credit_card  :  R.drawable.ic_clear_);
-        holder.garantia.setImageResource(model.isGarantia()? R.drawable.ic_verified_user : R.drawable.ic_clear_);
+        holder.garaje.setVisibility(model.isGaraje()? View.VISIBLE : View.INVISIBLE);
+        holder.tagerta.setVisibility(model.isTarjeta()? View.VISIBLE : View.INVISIBLE);
+        holder.garantia.setVisibility(model.isGarantia()? View.VISIBLE : View.INVISIBLE);
         holder.fondo.setBackgroundColor(Integer.parseInt(model.getColor()));
         holder.atencion.setProgress(model.getAtencion());
         holder.calidad.setProgress(model.getCalidad());
         holder.precio.setProgress(model.getPrecio());
         holder.imgOferta.setVisibility(model.isOfertas() ? View.VISIBLE : View.INVISIBLE);
+        holder.tagerta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "En " + model.getNombre() + " se acepta tarjeta", Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.garaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "En " + model.getNombre() + " presta servicio de parqueadero", Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.garantia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "En " + model.getNombre() + " da garantia en sus productos", Toast.LENGTH_LONG).show();
+            }
+        });
 
         Picasso.with(context).load(model.getImgLogo()).placeholder(R.drawable.ic_cloud_of).into(holder.logo);
         holder.numRecomendado.setText(String.valueOf(model.getNumRecomendado()));
+
+        holder.dirigeme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @NonNull

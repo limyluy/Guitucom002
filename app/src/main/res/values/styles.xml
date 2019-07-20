@@ -7,7 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorTransparente</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorTransparente
+        </item>
         //pendiente cambiar el backgruno de las pantallas
         <item name="android:windowBackground">@drawable/gradien_fondo</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
@@ -15,14 +16,11 @@
         <item name="actionBarSize">40dp</item>
 
 
-
-
     </style>
 
 
-
-
     // Style que se utiliza para realizar el SplasScrem. pendiente diseño
+
     <style name="AppTheme.SplashScreem" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/gradien_splash</item>
@@ -43,6 +41,62 @@
 
     <style name="AppTheme.bar" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorTransparente</item>
+
+
+    </style>
+
+    <style name="AppTheme.barlista" parent="AppTheme">
+        <item name="actionBarTheme">@style/AppTheme.bardos</item>
+
+
+    </style>
+
+    <style name="AppTheme.bardos" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/colorTransparente</item>
+        <item name="android:textColor">@color/colorTextoNegro</item>
+
+
+    </style>
+
+    <style name="AppTheme.barDetalle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorNegro</item>
+        <item name="android:buttonStyle">@style/ButtonStyle.detalle</item>
+        <item name="colorPrimaryDark">@color/colorNegro</item>
+
+
+
+
+
+
+    </style>
+
+    <style name="ButtonStyle.detalle" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/boton_detalle</item>
+        <item name="android:textColor">@color/colorHint</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:animateOnClick">true</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:capitalize">none</item>
+
+
+    </style>
+
+    <style name="ButtonStyle.botonW" parent="Base.TextAppearance.AppCompat.Button">
+    <item name="android:background">@drawable/boton_wassp</item>
+    <item name="android:textColor">@color/colorHint</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:animateOnClick">true</item>
+    <item name="android:textSize">15sp</item>
+    <item name="android:gravity">center</item>
+    <item name="android:capitalize">none</item>
+
+    </style>
+
+
+    <style name="AppTheme.barcard" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorNegro</item>
+        <item name="android:buttonStyle">@style/ButtonStyle.botonW</item>
 
 
     </style>

@@ -55,6 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme_barcard);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -65,9 +66,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.e("prueba", localesMapas.get(0).getNombre());
         nombre = getIntent().getStringExtra("nombre");
 
+        getSupportActionBar().setTitle("Vista por ubicacion");
+        getSupportActionBar().setSubtitle("Aqui encontratras: " + nombre);
 
-        getSupportActionBar().setTitle("olas soy yo");
-        getSupportActionBar().setHomeButtonEnabled(true);
+
 
 
     }
@@ -79,21 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng ipiales = new LatLng(0.83028, -77.64444);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ipiales, 14));
 
-        for (int i = 0; i < localesMapas.size();i++){
-
-            Locales locale = localesMapas.get(i);
-            LatLng ubicacion = new LatLng(locale.getUbicacion().getLatitude(),locale.getUbicacion().getLongitude());
-            MarkerOptions marker = new MarkerOptions().title(locale.getNombre())
-                    .position(ubicacion)
-                    .snippet("Aqui Encuentras "+ nombre)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-
-
-            mMap.addMarker(marker);
-        }
-
-
-
+        llenarMarkers();
 
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -105,7 +93,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String id2 = id.substring(1);
                 int i = Integer.parseInt(id2);
 
-                Locales local =localesMapas.get(i);
+                Locales local = localesMapas.get(i);
 
                 Intent intent = new Intent(MapsActivity.this, VerLocalDetalle.class);
                 intent.putExtra("nombre", local.getNombre());
@@ -116,9 +104,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent.putExtra("ubicasion", local.getUbicacion().toString());
                 intent.putExtra("direccion", local.getDireccion());
                 intent.putExtra("actualizado", local.isActualizado());
+                intent.putExtra("descripcion", local.getDescripcion());
+                intent.putStringArrayListExtra("tangs", (ArrayList<String>) local.getEtiquetas());
 
                 startActivity(intent);
-
 
 
             }
@@ -133,11 +122,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .snippet("snped para la decripcion")
                 //parqa cambiar de color el marker
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));*/
-
-
-
-
-
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -156,7 +140,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
 
+    }
 
+    private void llenarMarkers() {
 
+        for (int i = 0; i < localesMapas.size(); i++) {
+
+            Locales locale = localesMapas.get(i);
+            LatLng ubicacion = new LatLng(locale.getUbicacion().getLatitude(), locale.getUbicacion().getLongitude());
+            MarkerOptions marker = new MarkerOptions().title(locale.getNombre())
+                    .position(ubicacion)
+                    .snippet(locale.getEtiquetas().get(0))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            mMap.addMarker(marker);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(MapsActivity.this,LocalesLista.class);
+        intent.putExtra("nombre",nombre);
+        startActivity(intent);
     }
 }

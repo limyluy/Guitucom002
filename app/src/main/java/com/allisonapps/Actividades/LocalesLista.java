@@ -1,6 +1,8 @@
 package com.allisonapps.Actividades;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +24,7 @@ import com.allisonapps.Adaptadores.AdaptadorLocal;
 import com.allisonapps.Entidades.Locales;
 import com.allisonapps.MapsActivity;
 import com.allisonapps.R;
+import com.allisonapps.SujerenciasBusqueda;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,35 +42,41 @@ public class LocalesLista extends AppCompatActivity {
     private String nombre;
 
 
-
-    RecyclerView rcvLocales;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference reference = db.collection("locales");
-
-
-
-    AdaptadorLocal adaptador;
-
+    // variables para recucler
+    private RecyclerView rcvLocales;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference reference = db.collection("locales");
+    private AdaptadorLocal adaptador;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme_barlista);
         setContentView(R.layout.activity_locales_lista);
 
-        nombre = getIntent().getStringExtra("nombre");
-        Log.e("nombre",nombre);
-        getSupportActionBar().setTitle("Aqui Encontraras " + nombre);
 
+        // encontramos variables
         fabMapa = findViewById(R.id.fab_mapa_list_locales);
 
+        // recuperamos lo que se va a buscar
+        nombre = getIntent().getStringExtra("nombre");
+        Log.e("nombre", nombre);
+        getSupportActionBar().setTitle("Aqui Encontraras " + nombre);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        // boton para mapa
         fabMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if (nombre.equals("todo")){
+                    nombre = "Todos los locales";
+                }
                 ArrayList<Locales> arrayList = adaptador.obtenerLocales();
-                Intent intent = new Intent(LocalesLista.this,MapsActivity.class);
-                intent.putExtra("nombre",nombre);
+                Intent intent = new Intent(LocalesLista.this, MapsActivity.class);
+                intent.putExtra("nombre", nombre);
                 MapsActivity.localesMapas = arrayList;
                 startActivity(intent);
 
@@ -75,20 +84,28 @@ public class LocalesLista extends AppCompatActivity {
         });
 
 
+        llenarrecycler(conseguirQuery(nombre));
+    }
+
+    private Query conseguirQuery(String nombre) {
 
 
+        String categotia = preferenciaTraer();
+        Query query;
+        if (nombre.equals("todo")) {
+            getSupportActionBar().setTitle("Todos los locales");
+            query = reference.orderBy(categotia, Query.Direction.DESCENDING);
+        } else {
 
-        llenarrecycler();
+            query = reference.whereArrayContains("productos", nombre).orderBy(categotia, Query.Direction.DESCENDING);
+        }
+
+        return query;
     }
 
 
-
-    private void llenarrecycler() {
-
-        Query query = reference.whereArrayContains("productos",nombre);
-
-
-
+    // metodo para llenar recicler desde firebase
+    private void llenarrecycler(Query query) {
 
 
         FirestoreRecyclerOptions<Locales> options = new FirestoreRecyclerOptions.Builder<Locales>()
@@ -115,6 +132,8 @@ public class LocalesLista extends AppCompatActivity {
                 intent.putExtra("ubicasion", local.getUbicacion().toString());
                 intent.putExtra("direccion", local.getDireccion());
                 intent.putExtra("actualizado", local.isActualizado());
+                intent.putExtra("descripcion", local.getDescripcion());
+                intent.putStringArrayListExtra("tangs", (ArrayList<String>) local.getEtiquetas());
 
                 startActivity(intent);
 
@@ -123,12 +142,30 @@ public class LocalesLista extends AppCompatActivity {
 
 
     }
+    public String preferenciaTraer(){
+
+        SharedPreferences prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        String categoria = prefs.getString("categoria","atencion");
+
+        return categoria;
+    }
+
+    public void preferenciasGuardar(String categoria) {
+
+        SharedPreferences prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("categoria", categoria);
+        editor.commit();
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-          inflater.inflate(R.menu.menu_locales_lista,menu);
+        inflater.inflate(R.menu.menu_locales_lista, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -137,13 +174,56 @@ public class LocalesLista extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
             case R.id.menu_main_locales:
                 Toast.makeText(this, "menu locales", Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.menu_atencion:
+                Query query = conseguirQueryCategorizar(nombre, "atencion");
+                llenarrecycler(query);
+                preferenciasGuardar("atencion");
+                adaptador.startListening();
+                break;
+
+            case R.id.menu_calidad:
+                Query query2 = conseguirQueryCategorizar(nombre, "calidad");
+                llenarrecycler(query2);
+                preferenciasGuardar("calidad");
+                adaptador.startListening();
+                break;
+
+            case R.id.menu_precio:
+                Query query3 = conseguirQueryCategorizar(nombre, "precio");
+                llenarrecycler(query3);
+                preferenciasGuardar("precio");
+                adaptador.startListening();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private Query conseguirQueryCategorizar(String nombre, String categoria) {
+
+        Query query;
+        if (nombre.equals("todo")) {
+            getSupportActionBar().setTitle("Todos los locales");
+            query = reference.orderBy(categoria, Query.Direction.DESCENDING);
+        } else {
+
+            query = reference.whereArrayContains("productos", nombre).orderBy(categoria, Query.Direction.DESCENDING);
+        }
+
+        return query;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LocalesLista.this, SujerenciasBusqueda.class);
+        intent.putExtra("clave",nombre);
+        startActivity(intent);
     }
 
     @Override

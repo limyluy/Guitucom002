@@ -2,22 +2,29 @@ package com.allisonapps;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.allisonapps.Actividades.VerLocalDetalle;
-
-import java.util.zip.Inflater;
+import com.allisonapps.Actividades.LocalesLista;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,23 +34,31 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtMascien;
     private EditText edtBusqueda;
     private ImageView imgBuscar;
-
+    private ImageView imgBuscarIr;
+    private ImageView imgNube1;
+    private ImageView imgNube2;
+    private ImageView imgNube3;
+    private Button btnOfertas;
+    private Button btnEventos;
+    private Button btnDescuentos;
+    private Button btnLugaresInteres;
+    private CardView crdBarra;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         // para realizar el splashScrem seteamos el Style Appthem.SpalshScremm en el Manifes
         // con la liena de codigo abajo volvemos al tema original de la aplicacion
         setTheme(R.style.AppTheme);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         getSupportActionBar().setTitle("");
 
 
-
         // linea para dar soporte a la creacion de graficos con vectores
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
 
 
         // encontrar los witget de la activity main
@@ -51,8 +66,20 @@ public class MainActivity extends AppCompatActivity {
         txtMascien = findViewById(R.id.txt_mascien);
         edtBusqueda = findViewById(R.id.edt_busar);
         imgBuscar = findViewById(R.id.img_bucar);
+        imgBuscarIr = findViewById(R.id.img_bucar_ir);
+        imgNube1 = findViewById(R.id.img_nube1);
+        imgNube2 = findViewById(R.id.img_nube2);
+        imgNube3 = findViewById(R.id.img_nube3);
+        btnOfertas = findViewById(R.id.btn_ofertas);
+        btnEventos = findViewById(R.id.btn_eventos);
+        btnDescuentos = findViewById(R.id.btn_descuentos);
+        btnLugaresInteres = findViewById(R.id.btn_lugares);
+        crdBarra = findViewById(R.id.crv_barra_busqueda);
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            animacionesEntrada();
+        }
 
 
         // seteamos el tipo de fuente de los texview
@@ -61,12 +88,22 @@ public class MainActivity extends AppCompatActivity {
         Typeface face1 = Typeface.createFromAsset(getAssets(), "fonts/johan.ttf");
         txtMascien.setTypeface(face1);
 
+        // seteamos accion de buscar
         imgBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 buscarPalabraClave();
             }
         });
+
+        // seteamos accion de buscar
+        imgBuscarIr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buscarPalabraClave();
+            }
+        });
+
 
         // para que el seacher trabaje por medio del edidtext
         edtBusqueda.setOnKeyListener(new View.OnKeyListener() {
@@ -86,26 +123,102 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnOfertas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocalesLista.class);
+                intent.putExtra("nombre", "oferta");
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MainActivity.this,
+                                btnOfertas, "btnoferta");
+                startActivity(intent, options.toBundle());
+            }
+        });
 
+        btnEventos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocalesLista.class);
+                intent.putExtra("nombre", "evento");
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MainActivity.this,
+                                btnEventos, "btnoferta");
+                startActivity(intent, options.toBundle());
+
+            }
+        });
+
+        btnDescuentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Lo sentimos aun no esta habilitado", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnLugaresInteres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocalesLista.class);
+                intent.putExtra("nombre", "lugar");
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MainActivity.this,
+                                btnLugaresInteres, "btnoferta");
+                startActivity(intent, options.toBundle());
+
+
+            }
+        });
+
+
+    }
+
+    // metodo para realizar animaciones
+    private void animacionesEntrada() {
+
+        final Animation move = AnimationUtils.loadAnimation(this, R.anim.anim_move);
+        final Animation move2 = AnimationUtils.loadAnimation(this, R.anim.anim_move2);
+        final Animation move3 = AnimationUtils.loadAnimation(this, R.anim.anim_move3);
+        final Animation move4 = AnimationUtils.loadAnimation(this, R.anim.anim_move4);
+        final Animation moveNube1 = AnimationUtils.loadAnimation(this, R.anim.anim_move_centro);
+        final Animation moveNube2 = AnimationUtils.loadAnimation(this, R.anim.anim_move_centro2);
+
+
+        btnOfertas.setAnimation(move4);
+        btnEventos.setAnimation(move3);
+        btnDescuentos.setAnimation(move2);
+        btnLugaresInteres.setAnimation(move);
+        imgNube1.setAnimation(moveNube1);
+        imgNube2.setAnimation(moveNube1);
+        imgNube3.setAnimation(moveNube2);
     }
 
     private void buscarPalabraClave() {
 
-        if (edtBusqueda.getText().toString().isEmpty()){
-            Toast.makeText(this, "ingresa una articulo o local", Toast.LENGTH_SHORT).show(); return;}
+        if (edtBusqueda.getText().toString().isEmpty()) {
+            Toast.makeText(this, "ingresa una articulo o local", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            String palabraClave = edtBusqueda.getText().toString();
+        String palabraClave = edtBusqueda.getText().toString();
 
-        Intent intent = new Intent(MainActivity.this,SujerenciasBusqueda.class);
-        intent.putExtra("clave",palabraClave);
-        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, SujerenciasBusqueda.class);
+        intent.putExtra("clave", palabraClave);
+
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(MainActivity.this,
+                        crdBarra, "barraBusqueda");
+
+
+        startActivity(intent, options.toBundle());
+
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -113,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
             case R.id.menu_main:
                 Toast.makeText(this, "Menu Main", Toast.LENGTH_SHORT).show();

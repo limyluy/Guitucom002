@@ -14,10 +14,11 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="75dp"
-        />
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        tools:context=".MapsActivity" />
 
 </android.support.constraint.ConstraintLayout>
 

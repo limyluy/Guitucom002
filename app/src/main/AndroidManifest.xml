@@ -36,14 +36,15 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".Actividades.LocalesLista"></activity>
+            ></activity>
 
         <activity
             android:name=".Actividades.VerLocalDetalle"
             android:parentActivityName=".Actividades.LocalesLista" />
         <activity
             android:name=".Actividades.LocalesLista"
-            android:parentActivityName=".MainActivity" />
+
+            />
         <activity
             android:name=".SujerenciasBusqueda"
             android:configChanges="screenSize|orientation"

@@ -31,12 +31,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allisonapps.Adaptadores.AdaptadorLocal;
+import com.allisonapps.Adaptadores.TangsAdaptador;
 import com.allisonapps.Adaptadores.VerDetalleAdaptador;
 import com.allisonapps.CenterZoomLayoutManager;
 import com.allisonapps.Entidades.Locales;
@@ -54,6 +59,7 @@ import com.squareup.picasso.Target;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -73,15 +79,15 @@ public class VerLocalDetalle extends AppCompatActivity {
     private FirebaseFirestore db;
     private Context context;
 
-    private CardView crvVerLocal;
 
+    // widget
     private CardView crvVerLocalDetalle;
-    private CardView crvBotonRedondo;
     private ImageView imgLogoLocal;
     private ImageView imgVerLocal;
-    private ImageView imgGradient;
     private TextView txtDireccion;
     private TextView txtTelefono;
+    private TextView txtDescripcion;
+    private RecyclerView lista;
 
 
     //variables que se rescataran de la anterior actividad
@@ -93,6 +99,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     private String color;
     private String ubicacion;
     private String direccion;
+    private ArrayList tangs;
 
     private boolean actualizado;
     private Activity activity;
@@ -102,28 +109,17 @@ public class VerLocalDetalle extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.AppTheme_barDetalle);
         setContentView(R.layout.activity_ver_local_detalle);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
-
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_back);
-        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        getSupportActionBar().setTitle("");
-
-
-        crvVerLocal = findViewById(R.id.crv_ver_local_detalle);
         //crvBotonRedondo = findViewById(R.id.crv_btn_redondo_ver_local);
         crvVerLocalDetalle = findViewById(R.id.crv_ver_local_detalle);
-        imgGradient = findViewById(R.id.img_gradient_ver_local);
         imgVerLocal = findViewById(R.id.img_local_ver_local);
-        imgLogoLocal = findViewById(R.id.img_logo_local_ver_detalle);
+        imgLogoLocal = findViewById(R.id.img_logo_local_detalle);
         txtDireccion = findViewById(R.id.txt_dir_local_detalle);
         txtTelefono = findViewById(R.id.txt_tel_local_detalle);
-
-
-
+        txtDescripcion = findViewById(R.id.txt_descripcion_detalle);
+        lista = findViewById(R.id.liv_tangs_detalle);
 
 
         db = FirebaseFirestore.getInstance();
@@ -138,6 +134,14 @@ public class VerLocalDetalle extends AppCompatActivity {
         llenarRecyclerProducto();
 
 
+      /*  lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(context, String.valueOf(tangs.get(position)) , Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+
     }
 
     private void llenarLocal() {
@@ -145,18 +149,18 @@ public class VerLocalDetalle extends AppCompatActivity {
         // metodo para ajustar .centerCrop()
         Log.e("weith", String.valueOf(imgVerLocal.getMaxHeight()));
         Picasso.with(context).load(imglocal)
-
-                .resize(3000,1560)
-
-
+                .fit()
                 .into(imgVerLocal);
         Picasso.with(context).load(imglogo).into(imgLogoLocal);
         crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(color));
 
         txtDireccion.setText(direccion);
         txtTelefono.setText(telefono);
+        txtDescripcion.setText(descripcion);
 
-
+        TangsAdaptador adapter = new TangsAdaptador(context, tangs);
+        lista.setLayoutManager(new LinearLayoutManager(this));
+        lista.setAdapter(adapter);
 
 
     }
@@ -171,6 +175,8 @@ public class VerLocalDetalle extends AppCompatActivity {
         ubicacion = getIntent().getStringExtra("ubicasion");
         direccion = getIntent().getStringExtra("direccion");
         actualizado = getIntent().getBooleanExtra("actualizado", true);
+        descripcion = getIntent().getStringExtra("descripcion");
+        tangs = getIntent().getStringArrayListExtra("tangs");
 
     }
 
@@ -181,9 +187,8 @@ public class VerLocalDetalle extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        CenterZoomLayoutManager czl = new CenterZoomLayoutManager(this);
-        czl.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rcvVerProducto.setLayoutManager(czl);
+        //   CenterZoomLayoutManager czl = new CenterZoomLayoutManager(this);
+        rcvVerProducto.setLayoutManager(llm);
 
         CollectionReference ref = db.collection(PRODUCTOS);
         Query query = ref.orderBy("nombre", Query.Direction.ASCENDING);
@@ -204,12 +209,13 @@ public class VerLocalDetalle extends AppCompatActivity {
                 //falta integrar pedir permiso y acomodarlo para que se haga mas fluidamente
                 //primero hay que crear el contacto en un intent y despues en otro enviar el mensaje
 
-                if (verduplicado(telefono)){
+                if (verduplicado(telefono)) {
                     enviaMsjContacto(telefono);
-                }else {
+                } else {
                     //falta pedir permiso para agregar contacto
 
-                    crearContacto(telefono,nombre);                }
+                    crearContacto(telefono, nombre);
+                }
 
             }
         });
@@ -250,47 +256,47 @@ public class VerLocalDetalle extends AppCompatActivity {
     }
 
 
-    private void crearContacto(String telefono , String nombre) {
+    private void crearContacto(String telefono, String nombre) {
 
 
-            ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
+        ops.add(ContentProviderOperation.newInsert(
+                ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
+
+        if (nombre != null) {
             ops.add(ContentProviderOperation.newInsert(
-                    ContactsContract.RawContacts.CONTENT_URI)
-                    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                    ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(
+                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                            nombre).build());
+        }
+
+
+        if (telefono != null) {
+            ops.add(ContentProviderOperation.
+                    newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, telefono)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
                     .build());
+        }
 
-            if (nombre != null) {
-                ops.add(ContentProviderOperation.newInsert(
-                        ContactsContract.Data.CONTENT_URI)
-                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                        .withValue(ContactsContract.Data.MIMETYPE,
-                                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                        .withValue(
-                                ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-                                nombre).build());
-            }
-
-
-            if (telefono != null) {
-                ops.add(ContentProviderOperation.
-                        newInsert(ContactsContract.Data.CONTENT_URI)
-                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                        .withValue(ContactsContract.Data.MIMETYPE,
-                                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, telefono)
-                        .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
-                                ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                        .build());
-            }
-
-            try {
-                getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(context, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+        try {
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
     }
@@ -320,7 +326,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         }
     }
 
-// metodo para saber si wassap esta isntalado
+    // metodo para saber si wassap esta isntalado
     private boolean whatsappInstalledOrNot(String uri) {
         PackageManager pm = context.getPackageManager();
         boolean app_installed = false;
@@ -359,7 +365,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_detalle, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -367,7 +373,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
             case R.id.menu_main:
                 Toast.makeText(context, "Menu main", Toast.LENGTH_SHORT).show();

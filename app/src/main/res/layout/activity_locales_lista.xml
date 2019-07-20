@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Actividades.LocalesLista">
+    tools:context=".Actividades.LocalesLista"
+    android:background="@drawable/fondo_locales_lista"
+    android:transitionName="btnoferta">
 
 
     <android.support.v7.widget.RecyclerView
@@ -15,7 +17,6 @@
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/targetas_locales">
 
@@ -27,10 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_mapa"/>
+        app:srcCompat="@drawable/ic_marcador"
+        android:backgroundTint="@color/colorIconos"
+        app:maxImageSize="35dp"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

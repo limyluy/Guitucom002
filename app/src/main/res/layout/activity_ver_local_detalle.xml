@@ -9,11 +9,11 @@
     <android.support.v7.widget.CardView
         android:id="@+id/crv_ver_local_detalle"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="220dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,137 +23,216 @@
                 android:id="@+id/img_local_ver_local"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="4dp"
                 android:adjustViewBounds="true"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorNegro"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <ImageView
                 android:id="@+id/img_gradient_ver_local"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="4dp"
                 android:background="@drawable/gradien_ver_local"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/img_logo_local_detalle"
+                android:layout_width="125dp"
+                android:layout_height="115dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_guiame_local_detalle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_ic_back" />
+
+            <Button
+                android:id="@+id/btn_guiame_local_detalle"
+                android:layout_width="129dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:elevation="10dp"
+                android:text="Guiame"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
 
             <ImageView
-                android:id="@+id/img_local_detalle_parqueader"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="8dp"
-                android:tint="@color/colorTituloPrincioal"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/img_ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_local_parking" />
-
-            <ImageView
-                android:id="@+id/img_local_detalle_tarjeta"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:tint="@color/colorTituloPrincioal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_local_detalle_parqueader"
-                app:srcCompat="@drawable/ic_credit_card" />
-
-            <ImageView
-                android:id="@+id/img_locl_detalle_garantia"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:tint="@color/colorTituloPrincioal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_local_detalle_tarjeta"
-                app:srcCompat="@drawable/ic_verified_user" />
-
-
+                app:srcCompat="@drawable/ic_flecha_hacia_la_izquierda" />
 
         </android.support.constraint.ConstraintLayout>
 
 
     </android.support.v7.widget.CardView>
 
-
-    <ImageView
-        android:id="@+id/img_logo_local_ver_detalle"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="160dp"
-        android:layout_marginEnd="32dp"
-        android:elevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/crv_ver_local_detalle" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crv_ver_local_detalle"
-        app:srcCompat="@drawable/ic_store_directory" />
-
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/ic_local_phone" />
-
     <TextView
-        android:id="@+id/txt_dir_local_detalle"
-        android:layout_width="157dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:text="Direccion"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/img_logo_local_ver_detalle"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/crv_ver_local_detalle" />
-
-
-    <TextView
-        android:id="@+id/txt_tel_local_detalle"
-        android:layout_width="157dp"
+        android:id="@+id/txt_tangs"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:text="Tangs:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/liv_tangs_detalle"
+        android:layout_width="75dp"
+        android:layout_height="227dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Telefono"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/img_logo_local_ver_detalle"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/txt_dir_local_detalle" />
+        app:layout_constraintEnd_toStartOf="@+id/rcv_ver_locales_detalle"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tangs">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="64dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="10dp"
+        app:cardBackgroundColor="@color/colorTextPrincipal"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/rcv_ver_locales_detalle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_descripcion_detalle"
+        app:layout_goneMarginTop="5dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorHint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_gusta" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="0"
+                android:textColor="@color/colorHint"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_ver_locales_detalle"
-        android:layout_width="match_parent"
-        android:layout_height="399dp"
+        android:layout_width="332dp"
+        android:layout_height="352dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorTransparente"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/txt_descripcion_detalle">
 
 
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/txt_descripcion_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="8dp"
+        android:text="descripcion de local"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/crv_ver_local_detalle"
+        tools:layout_editor_absoluteX="5dp"
+        android:maxLines="2"/>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/crv_inerior_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardBackgroundColor="@color/colorTextPrincipal"
+        app:cardCornerRadius="0dp">
+
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_dir_local_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="Direccion"
+                android:textColor="@color/colorHint"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/txt_tel_local_detalle"
+                tools:layout_editor_absoluteX="0dp" />
+
+
+            <TextView
+                android:id="@+id/txt_tel_local_detalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="Telefono"
+                android:textColor="@color/colorHint"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v7.widget.CardView>
 
 
 </android.support.constraint.ConstraintLayout>

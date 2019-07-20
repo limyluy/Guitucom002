@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SujerenciasBusqueda"
-    android:layout_margin="5dp">
+    android:background="@mipmap/mapa_fondo_si"
+    >
 
 
     <android.support.v7.widget.Toolbar
@@ -13,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@color/colorTransparente"
+        android:background="@color/colorHint"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="15dp"
+        android:transitionName="barraBusqueda">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,16 +30,17 @@
 
             <ImageView
                 android:id="@+id/img_ic_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/ic_flecha_hacia_la_izquierda"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"/>
 
 
+
             <EditText
                 android:id="@+id/txt_clave"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Nueva Busqueda"
                 android:maxLines="1"
@@ -44,29 +48,40 @@
                 android:singleLine="true"
                 android:imeOptions="actionSearch"
                 android:layout_toRightOf="@+id/img_ic_back"
-                android:layout_toLeftOf="@+id/img_bucarnuevo"
                 android:layout_centerVertical="true"
+                android:backgroundTint="@color/colorTransparente"
+                android:background="@color/colorPrimary"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="30dp"
+
+                android:inputType="textCapSentences"
+
+
                 />
 
             <ImageView
-                android:id="@+id/img_bucarnuevo"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:elevation="5dp"
-                app:srcCompat="@drawable/ic_search_black_24dp"
-                android:layout_toLeftOf="@id/img_borrarnuevo"
+                android:id="@+id/img_buscar_ir_sujerencias"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toLeftOf="@+id/txt_ver_todo"
                 android:layout_centerVertical="true"
-                />
+                android:layout_marginEnd="5dp"
+                app:srcCompat="@drawable/ic_flecha_derecha" />
 
-            <ImageView
-                android:id="@+id/img_borrarnuevo"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:elevation="5dp"
-                app:srcCompat="@drawable/ic_clear_"
+            <TextView
+                android:id="@+id/txt_ver_todo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver todo"
+                android:textColor="@color/colorIconos"
+                android:textStyle="bold"
+                android:layout_marginEnd="15dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                />
+                android:layout_centerVertical="true"/>
+
+
+
+
 
 
 
@@ -74,27 +89,48 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/txt_sujerencias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:text="Sugerencias"
+    <ImageView
+        android:id="@+id/img_mapa"
+        android:layout_width="match_parent"
+        android:layout_height="659dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar_busqueda" />
+        app:layout_constraintTop_toTopOf="@+id/txt_sujerencias"
+        android:transitionName="barraBusqueda"
+
+        />
 
     <ProgressBar
         android:id="@+id/probra_suje"
-        android:layout_width="30dp"
-        android:layout_height="32dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_sujerencias" />
+
+    <TextView
+        android:id="@+id/txt_sujerencias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="50dp"
+        android:text="Sugerencias de Busqueda"
+        android:textColor="@color/colorTextoSecudario"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bar_busqueda"
+        android:gravity="center"
+        android:transitionName="palabra"
+        android:textStyle="bold"
+        />
 
     <com.algolia.instantsearch.ui.views.SearchBox
         android:id="@+id/seacheBox"
@@ -112,19 +148,22 @@
     <com.algolia.instantsearch.ui.views.Hits
         android:id="@+id/hits"
         android:layout_width="match_parent"
-        android:layout_height="533dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="583dp"
+        android:layout_marginStart="50dp"
+        android:background="@color/colorTransparente"
+        android:layout_marginEnd="50dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         app:itemLayout="@layout/hits_layout"
+        app:layout_constraintBottom_toTopOf="@+id/seacheBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_sujerencias"
-        android:background="@color/colorTextPrincipal"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/txt_sujerencias">
+
 
     </com.algolia.instantsearch.ui.views.Hits>
+
 
 
 

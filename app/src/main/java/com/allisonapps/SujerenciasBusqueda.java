@@ -1,16 +1,23 @@
 package com.allisonapps;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -19,17 +26,24 @@ import com.algolia.instantsearch.ui.helpers.InstantSearch;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport;
 import com.algolia.instantsearch.ui.views.Hits;
 import com.allisonapps.Actividades.LocalesLista;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+
+import java.security.Key;
 
 public class SujerenciasBusqueda extends AppCompatActivity {
 
     //witget
     private Toolbar tooSuperior;
     private EditText edtClave;
- //   private EditText edtNuevaBusqueda;
-    private ImageView imgBuscarnuevo;
-    private ImageView imgBorrarnuevo;
+    private TextView txtSujerencia;
+    private TextView txtVerTodo;
+    private ImageView imgIconAtras;
+    private ImageView imgIconoIr;
+
+
+    //   private EditText edtNuevaBusqueda;
     private ProgressBar proSujerencias;
 
     //vasriables para Algolia
@@ -49,40 +63,63 @@ public class SujerenciasBusqueda extends AppCompatActivity {
         getSupportActionBar().hide();
 
         // encontramos los witgets del activity SujerenciasBusqueda
-        tooSuperior = findViewById(R.id.barra_busqueda);
+        tooSuperior = findViewById(R.id.crv_barra_busqueda);
         edtClave = findViewById(R.id.txt_clave);
-        imgBuscarnuevo = findViewById(R.id.img_bucarnuevo);
-        imgBorrarnuevo = findViewById(R.id.img_borrarnuevo);
         proSujerencias = findViewById(R.id.probra_suje);
         hits = findViewById(R.id.hits);
+        imgIconAtras = findViewById(R.id.img_ic_back);
+        imgIconoIr = findViewById(R.id.img_buscar_ir_sujerencias);
+        txtVerTodo = findViewById(R.id.txt_ver_todo);
+        txtSujerencia = findViewById(R.id.txt_sujerencias);
+
+
+        String palabra = getIntent().getStringExtra("clave");
+        txtSujerencia.setText(palabra);
+
 
         buscarpalabraAlgolia();
 
 
-
-        // para que el seacher trabaje por medio del edidtext
-        edtClave.setOnKeyListener(new View.OnKeyListener() {
+        edtClave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (edtClave.getText().toString().isEmpty()) {
-                    Toast.makeText(SujerenciasBusqueda.this, "No hay palabra para Buscar", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
+            public void onClick(View v) {
 
-                String palabraNueva = edtClave.getText().toString();
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    switch (keyCode) {
-                        case KeyEvent.KEYCODE_DPAD_CENTER:
-                        case KeyEvent.KEYCODE_ENTER:
-                            realizarBusqueda(palabraNueva);
-                            return true;
-                        default:
-                            break;
-                    }
+                if (edtClave.getText().toString().isEmpty()) {
+                    return;
                 }
-                return false;
+                realizarBusqueda(edtClave.getText().toString());
             }
         });
+
+        imgIconAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SujerenciasBusqueda.super.onBackPressed();
+            }
+        });
+
+        imgIconoIr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (edtClave.getText().toString().isEmpty()) {
+                    Toast.makeText(SujerenciasBusqueda.this, "No hay palabra", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                realizarBusqueda(edtClave.getText().toString());
+
+            }
+        });
+
+        txtVerTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SujerenciasBusqueda.this, LocalesLista.class);
+                intent.putExtra("nombre","todo");
+                startActivity(intent);
+            }
+        });
+
 
         //para dar oncliklistener a los pruductos encontrados
         hits.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
@@ -97,11 +134,12 @@ public class SujerenciasBusqueda extends AppCompatActivity {
                     Toast.makeText(SujerenciasBusqueda.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent  intent = new Intent(SujerenciasBusqueda.this, LocalesLista.class);
-                intent.putExtra("nombre",nombre);
+                Intent intent = new Intent(SujerenciasBusqueda.this, LocalesLista.class);
+                intent.putExtra("nombre", nombre);
                 startActivity(intent);
             }
         });
+
 
     }
 
@@ -109,11 +147,11 @@ public class SujerenciasBusqueda extends AppCompatActivity {
         final String palabraClave = getIntent().getStringExtra("clave");
         if (palabraClave != null) {
             realizarBusqueda(palabraClave);
-            edtClave.setText(palabraClave);
+            // edtClave.setText(palabraClave);
             progresbarr();
         } else {
             Toast.makeText(this, "No es reconoce palabra", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(SujerenciasBusqueda.this, MainActivity.class));
+            startActivity(new Intent(SujerenciasBusqueda.this, MainActivity.class));
         }
     }
 
@@ -152,5 +190,11 @@ public class SujerenciasBusqueda extends AppCompatActivity {
                 proSujerencias.setVisibility(View.INVISIBLE);
             }
         }).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SujerenciasBusqueda.this,MainActivity.class);
+        startActivity(intent);
     }
 }

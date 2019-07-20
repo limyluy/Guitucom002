@@ -81,6 +81,7 @@
         android:layout_marginBottom="8dp"
         android:elevation="10dp"
         android:text="@string/btnOferetas"
+        android:transitionName="btnoferta"
         app:layout_constraintBottom_toTopOf="@+id/btn_eventos"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -123,13 +124,14 @@
     <!--- Barra de busqueda -->
 
     <android.support.v7.widget.CardView
-        android:id="@+id/barra_busqueda"
+        android:id="@+id/crv_barra_busqueda"
         android:layout_width="360dp"
         android:layout_height="45dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:elevation="20dp"
+        android:transitionName="barraBusqueda"
         app:cardBackgroundColor="@color/colorBotones"
         app:cardCornerRadius="23dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -149,8 +151,8 @@
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
                 android:layout_marginRight="3dp"
-                android:layout_marginLeft="5dp"
                 android:elevation="5dp"
                 app:srcCompat="@drawable/ic_search_black_24dp" />
 
@@ -164,8 +166,12 @@
                 android:backgroundTint="@color/colorTransparente"
                 android:hint="Que vas a Comprar"
                 android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:singleLine="true" />
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textColor="@color/colorTextoSecudario"
+
+
+                android:transitionName="palabra" />
 
             <ImageView
                 android:id="@+id/img_bucar_ir"
@@ -173,8 +179,8 @@
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="8dp"
                 android:elevation="5dp"
                 app:srcCompat="@drawable/ic_flecha_derecha" />
 

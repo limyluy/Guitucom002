@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <item
+        android:id="@+id/menu_tarjeta"
+        android:icon="@drawable/ic_tarjeta_blanco"
+        android:title="tarjeta"
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+
+
+    <item
+        android:id="@+id/menu_garantia"
+        android:icon="@drawable/ic_garantia_blanco"
+        android:title="menus"
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+
+    <item
+        android:id="@+id/menu_garage"
+        android:icon="@drawable/ic_garaje_blanco"
+        android:title="menus"
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+
+</menu>
