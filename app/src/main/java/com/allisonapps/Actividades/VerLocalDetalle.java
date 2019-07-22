@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -49,9 +50,11 @@ import com.allisonapps.Entidades.Productos;
 import com.allisonapps.R;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -84,10 +87,12 @@ public class VerLocalDetalle extends AppCompatActivity {
     private CardView crvVerLocalDetalle;
     private ImageView imgLogoLocal;
     private ImageView imgVerLocal;
+    private ImageView imgBack;
     private TextView txtDireccion;
     private TextView txtTelefono;
     private TextView txtDescripcion;
     private RecyclerView lista;
+    private Button btnGuiame;
 
 
     //variables que se rescataran de la anterior actividad
@@ -97,7 +102,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     private String imglocal;
     private String telefono;
     private String color;
-    private String ubicacion;
+    private GeoPoint ubicacion;
     private String direccion;
     private ArrayList tangs;
 
@@ -112,7 +117,8 @@ public class VerLocalDetalle extends AppCompatActivity {
         setTheme(R.style.AppTheme_barDetalle);
         setContentView(R.layout.activity_ver_local_detalle);
 
-        //crvBotonRedondo = findViewById(R.id.crv_btn_redondo_ver_local);
+
+        // encontramos los widget
         crvVerLocalDetalle = findViewById(R.id.crv_ver_local_detalle);
         imgVerLocal = findViewById(R.id.img_local_ver_local);
         imgLogoLocal = findViewById(R.id.img_logo_local_detalle);
@@ -120,12 +126,14 @@ public class VerLocalDetalle extends AppCompatActivity {
         txtTelefono = findViewById(R.id.txt_tel_local_detalle);
         txtDescripcion = findViewById(R.id.txt_descripcion_detalle);
         lista = findViewById(R.id.liv_tangs_detalle);
+        btnGuiame = findViewById(R.id.btn_guiame_local_detalle);
+        rcvVerProducto = findViewById(R.id.rcv_ver_locales_detalle);
+        imgBack = findViewById(R.id.img_ic_back);
 
 
+        // inicalizamos variables
         db = FirebaseFirestore.getInstance();
         context = getApplicationContext();
-
-        rcvVerProducto = findViewById(R.id.rcv_ver_locales_detalle);
         activity = this;
 
 
@@ -133,13 +141,20 @@ public class VerLocalDetalle extends AppCompatActivity {
         llenarLocal();
         llenarRecyclerProducto();
 
-
-      /*  lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        btnGuiame.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, String.valueOf(tangs.get(position)) , Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+
+                abrirMapa(context,ubicacion.getLatitude(),ubicacion.getLongitude());
             }
-        });*/
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
     }
@@ -172,15 +187,20 @@ public class VerLocalDetalle extends AppCompatActivity {
         imglogo = getIntent().getStringExtra("imglogo");
         telefono = getIntent().getStringExtra("telefono");
         color = getIntent().getStringExtra("color");
-        ubicacion = getIntent().getStringExtra("ubicasion");
+        Double latitud = getIntent().getDoubleExtra("latitud",0.0);
+        Double longitud = getIntent().getDoubleExtra("longitud",0.0);
         direccion = getIntent().getStringExtra("direccion");
         actualizado = getIntent().getBooleanExtra("actualizado", true);
         descripcion = getIntent().getStringExtra("descripcion");
         tangs = getIntent().getStringArrayListExtra("tangs");
 
+
+        ubicacion = new GeoPoint(latitud,longitud);
+
+
     }
 
-    //meetodo para llenar recyler y dar accin al boton mas detalle
+    //metodo para llenar recyler y dar accion al boton mas detalle
     private void llenarRecyclerProducto() {
 
         rcvVerProducto.setHasFixedSize(true);
@@ -213,7 +233,6 @@ public class VerLocalDetalle extends AppCompatActivity {
                     enviaMsjContacto(telefono);
                 } else {
                     //falta pedir permiso para agregar contacto
-
                     crearContacto(telefono, nombre);
                 }
 
@@ -393,5 +412,18 @@ public class VerLocalDetalle extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adaptador.stopListening();
+    }
+
+    public static void abrirMapa(Context context, double latitude, double longitude) {
+        String uri = String.format(Locale.ENGLISH, "google.navigation:q=%1$f,%2$f", latitude, longitude);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        context.startActivity(intent);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -2,6 +2,8 @@ package com.allisonapps.Adaptadores;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLocal.LocalHolder> {
     Context context;
@@ -90,6 +93,7 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
             @Override
             public void onClick(View v) {
 
+                navigateExternalTo(context,model.getUbicacion().getLatitude(),model.getUbicacion().getLongitude());
             }
         });
     }
@@ -153,6 +157,8 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
                     }
                 }
             });
+
+
         }
 
     }
@@ -164,7 +170,12 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         this.listener = listener;
     }
 
+    public static void navigateExternalTo(Context context, double latitude, double longitude) {
+        String uri = String.format(Locale.ENGLISH, "google.navigation:q=%1$f,%2$f", latitude, longitude);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        context.startActivity(intent);
 
-
+    }
 
 }

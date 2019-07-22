@@ -71,9 +71,7 @@ public class LocalesLista extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (nombre.equals("todo")){
-                    nombre = "Todos los locales";
-                }
+
                 ArrayList<Locales> arrayList = adaptador.obtenerLocales();
                 Intent intent = new Intent(LocalesLista.this, MapsActivity.class);
                 intent.putExtra("nombre", nombre);
@@ -129,7 +127,8 @@ public class LocalesLista extends AppCompatActivity {
                 intent.putExtra("imglogo", local.getImgLogo());
                 intent.putExtra("telefono", local.getTelefono());
                 intent.putExtra("color", local.getColor());
-                intent.putExtra("ubicasion", local.getUbicacion().toString());
+                intent.putExtra("latitud", local.getUbicacion().getLatitude());
+                intent.putExtra("longitud", local.getUbicacion().getLongitude());
                 intent.putExtra("direccion", local.getDireccion());
                 intent.putExtra("actualizado", local.isActualizado());
                 intent.putExtra("descripcion", local.getDescripcion());

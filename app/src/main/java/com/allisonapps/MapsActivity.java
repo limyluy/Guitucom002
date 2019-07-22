@@ -46,7 +46,6 @@ import java.util.List;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private FirebaseFirestore fb;
     private ArrayList<Marker> markers = new ArrayList<>();
     public static ArrayList<Locales> localesMapas;
     private String nombre;
@@ -67,9 +66,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         nombre = getIntent().getStringExtra("nombre");
 
         getSupportActionBar().setTitle("Vista por ubicacion");
-        getSupportActionBar().setSubtitle("Aqui encontratras: " + nombre);
-
-
+        getSupportActionBar().setSubtitle("Aqui encontratras: " + nombre + "s los locales");
 
 
     }
@@ -101,7 +98,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent.putExtra("imglogo", local.getImgLogo());
                 intent.putExtra("telefono", local.getTelefono());
                 intent.putExtra("color", local.getColor());
-                intent.putExtra("ubicasion", local.getUbicacion().toString());
+                intent.putExtra("latitud", local.getUbicacion().getLatitude());
+                intent.putExtra("longitud", local.getUbicacion().getLongitude());
                 intent.putExtra("direccion", local.getDireccion());
                 intent.putExtra("actualizado", local.isActualizado());
                 intent.putExtra("descripcion", local.getDescripcion());
@@ -112,16 +110,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-
-
-        // Add a marker in Sydney and move the camera
-     /*
-        mMap.addMarker(new MarkerOptions()
-                .position(ipiales)
-                .title("Marker in Sydney")
-                .snippet("snped para la decripcion")
-                //parqa cambiar de color el marker
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));*/
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -160,8 +148,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed() {
 
-        Intent intent = new Intent(MapsActivity.this,LocalesLista.class);
-        intent.putExtra("nombre",nombre);
+        Intent intent = new Intent(MapsActivity.this, LocalesLista.class);
+        intent.putExtra("nombre", nombre);
         startActivity(intent);
     }
 }
