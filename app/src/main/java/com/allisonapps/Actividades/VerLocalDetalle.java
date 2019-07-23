@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -56,9 +57,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,7 +78,8 @@ public class VerLocalDetalle extends AppCompatActivity {
     // nombre de la collencion de firebase
     private static final String PRODUCTOS = "productos";
 
-// en easta actividad tratamos de enviar un mensaje a wasapt agregando nosotro el texto y tambien el contacto si el usuario lo permite
+    // en easta actividad tratamos de enviar un mensaje a wasapt agregando nosotro el texto y
+    // tambien el contacto si el usuario lo permite
 
     //variables para llenar el recycler falta especificar query
     private RecyclerView rcvVerProducto;
@@ -91,8 +96,10 @@ public class VerLocalDetalle extends AppCompatActivity {
     private TextView txtDireccion;
     private TextView txtTelefono;
     private TextView txtDescripcion;
+    private TextView txtNumeroLike;
     private RecyclerView lista;
     private Button btnGuiame;
+    private CardView cardBtnLike;
 
 
     //variables que se rescataran de la anterior actividad
@@ -105,6 +112,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     private GeoPoint ubicacion;
     private String direccion;
     private ArrayList tangs;
+    private ArrayList<String> localesFavoritos;
 
     private boolean actualizado;
     private Activity activity;
@@ -125,10 +133,12 @@ public class VerLocalDetalle extends AppCompatActivity {
         txtDireccion = findViewById(R.id.txt_dir_local_detalle);
         txtTelefono = findViewById(R.id.txt_tel_local_detalle);
         txtDescripcion = findViewById(R.id.txt_descripcion_detalle);
+        txtNumeroLike = findViewById(R.id.txt_numero_like);
         lista = findViewById(R.id.liv_tangs_detalle);
         btnGuiame = findViewById(R.id.btn_guiame_local_detalle);
         rcvVerProducto = findViewById(R.id.rcv_ver_locales_detalle);
         imgBack = findViewById(R.id.img_ic_back);
+        cardBtnLike = findViewById(R.id.crv_boton_like);
 
 
         // inicalizamos variables
@@ -137,6 +147,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         activity = this;
 
 
+        recuperarFavoritos();
         rescatarVariables();
         llenarLocal();
         llenarRecyclerProducto();
@@ -145,7 +156,7 @@ public class VerLocalDetalle extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                abrirMapa(context,ubicacion.getLatitude(),ubicacion.getLongitude());
+                abrirMapa(context, ubicacion.getLatitude(), ubicacion.getLongitude());
             }
         });
 
@@ -156,6 +167,63 @@ public class VerLocalDetalle extends AppCompatActivity {
             }
         });
 
+        cardBtnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agregarLocalesFavoritos();
+            }
+        });
+
+
+    }
+
+    private void agregarLocalesFavoritos() {
+
+        localesFavoritos.add(nombre);
+
+        SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(localesFavoritos);
+        editor.putString("favoritos", json);
+        editor.apply();
+
+        int numero = Integer.parseInt(txtNumeroLike.getText().toString());
+        numero++;
+        txtNumeroLike.setText(String.valueOf(numero));
+
+
+    }
+
+    private void recuperarFavoritos() {
+
+        SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = preferences.getString("favoritos", null);
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        localesFavoritos = gson.fromJson(json, type);
+
+
+
+        if (localesFavoritos == null) {
+            localesFavoritos = new ArrayList<>();
+            return;
+        }
+
+
+        for (int i = 0; i < localesFavoritos.size(); i++) {
+
+            Log.e("recuperado",localesFavoritos.get(i));
+            if (localesFavoritos.get(i).equals(nombre)) {
+                cardBtnLike.setActivated(false);
+                Log.e("nombre",nombre);
+
+                int numero = Integer.parseInt(txtNumeroLike.getText().toString());
+                numero++;
+                txtNumeroLike.setText(String.valueOf(numero));
+            }
+        }
 
     }
 
@@ -187,15 +255,15 @@ public class VerLocalDetalle extends AppCompatActivity {
         imglogo = getIntent().getStringExtra("imglogo");
         telefono = getIntent().getStringExtra("telefono");
         color = getIntent().getStringExtra("color");
-        Double latitud = getIntent().getDoubleExtra("latitud",0.0);
-        Double longitud = getIntent().getDoubleExtra("longitud",0.0);
+        Double latitud = getIntent().getDoubleExtra("latitud", 0.0);
+        Double longitud = getIntent().getDoubleExtra("longitud", 0.0);
         direccion = getIntent().getStringExtra("direccion");
         actualizado = getIntent().getBooleanExtra("actualizado", true);
         descripcion = getIntent().getStringExtra("descripcion");
         tangs = getIntent().getStringArrayListExtra("tangs");
 
 
-        ubicacion = new GeoPoint(latitud,longitud);
+        ubicacion = new GeoPoint(latitud, longitud);
 
 
     }

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Actividades.VerLocalDetalle">
+    tools:context=".Actividades.VerLocalDetalle"
+    android:background="@drawable/fondo_detalle"
+    >
 
     <android.support.v7.widget.CardView
         android:id="@+id/crv_ver_local_detalle"
@@ -33,12 +35,13 @@
 
             <ImageView
                 android:id="@+id/img_gradient_ver_local"
-                android:layout_width="300dp"
+                android:layout_width="216dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/gradien_ver_local"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/img_logo_local_detalle"
@@ -69,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_flecha_hacia_la_izquierda" />
@@ -87,31 +90,34 @@
         android:text="Tangs:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/crv_boton_like" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/liv_tangs_detalle"
         android:layout_width="75dp"
         android:layout_height="227dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/crv_inerior_detalle"
         app:layout_constraintEnd_toStartOf="@+id/rcv_ver_locales_detalle"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_tangs">
+        app:layout_constraintTop_toBottomOf="@+id/crv_boton_like">
 
     </android.support.v7.widget.RecyclerView>
 
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/crv_boton_like"
         android:layout_width="64dp"
         android:layout_height="89dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:elevation="10dp"
-        app:cardBackgroundColor="@color/colorTextPrincipal"
+        app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="30dp"
         app:layout_constraintEnd_toStartOf="@+id/rcv_ver_locales_detalle"
         app:layout_constraintStart_toStartOf="parent"
@@ -137,6 +143,7 @@
                 app:srcCompat="@drawable/ic_gusta" />
 
             <TextView
+                android:id="@+id/txt_numero_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -174,12 +181,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:maxLines="2"
         android:text="descripcion de local"
+        android:textColor="@color/colorBotones"
         android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crv_ver_local_detalle"
-        tools:layout_editor_absoluteX="5dp"
-        android:maxLines="2"/>
+        android:gravity="center"/>
 
 
     <android.support.v7.widget.CardView
@@ -233,6 +245,7 @@
 
 
     </android.support.v7.widget.CardView>
+
 
 
 </android.support.constraint.ConstraintLayout>
