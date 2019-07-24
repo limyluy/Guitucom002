@@ -118,7 +118,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     private String imglocalUno;
     private String imglocalDos;
     private String imglocalTres;
-
+    private boolean isFavorito = false;
     private boolean actualizado;
     private Activity activity;
     private String PalabraBuscada;
@@ -152,9 +152,8 @@ public class VerLocalDetalle extends AppCompatActivity {
         context = getApplicationContext();
         activity = this;
 
-
-        recuperarFavoritos();
         rescatarVariables();
+        recuperarFavoritos();
 
         llenarLocal();
         llenarRecyclerProducto();
@@ -197,6 +196,11 @@ public class VerLocalDetalle extends AppCompatActivity {
 
     private void agregarLocalesFavoritos() {
 
+        if (isFavorito == true){
+            Toast.makeText(context, nombre + " Ya se encuentra en tu lista de favoritos", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         localesFavoritos.add(nombre);
 
         SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
@@ -225,6 +229,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         if (localesFavoritos == null) {
             localesFavoritos = new ArrayList<>();
+            Log.e("favoritos ", "bacio");
             return;
         }
 
@@ -232,9 +237,15 @@ public class VerLocalDetalle extends AppCompatActivity {
         for (int i = 0; i < localesFavoritos.size(); i++) {
 
             Log.e("recuperado", localesFavoritos.get(i));
+
             if (localesFavoritos.get(i).equals(nombre)) {
-                cardBtnLike.setActivated(false);
-                Log.e("nombre", nombre);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    cardBtnLike.setCardBackgroundColor(getColor(R.color.colorTextoGris));
+                    isFavorito = true;
+                }
+
+
 
                 int numero = Integer.parseInt(txtNumeroLike.getText().toString());
                 numero++;
@@ -306,6 +317,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         CollectionReference ref = db.collection(PRODUCTOS);
         Query query = ref.orderBy("nombre", Query.Direction.ASCENDING);
+
 
         FirestoreRecyclerOptions<Productos> options = new FirestoreRecyclerOptions.Builder<Productos>()
                 .setQuery(query, Productos.class)

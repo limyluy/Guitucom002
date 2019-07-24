@@ -42,7 +42,7 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
     protected void onBindViewHolder(@NonNull LocalHolder holder, int position, @NonNull final Locales model) {
 
         locales.add(model);
-        Log.e("pasado",locales.get(position).getNombre());
+//        Log.e("pasado",locales.get(position).getNombre());
 
         String color = model.getColor();
 
