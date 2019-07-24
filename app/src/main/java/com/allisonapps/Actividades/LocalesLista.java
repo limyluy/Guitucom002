@@ -123,7 +123,9 @@ public class LocalesLista extends AppCompatActivity {
                 Locales local = documentSnapshot.toObject(Locales.class);
                 Intent intent = new Intent(LocalesLista.this, VerLocalDetalle.class);
                 intent.putExtra("nombre", local.getNombre());
-                intent.putExtra("imglocal", local.getImgLocal());
+                intent.putExtra("dos", local.getImgLocalDos());
+                intent.putExtra("uno", local.getImgLocalUno());
+                intent.putExtra("tres", local.getImgLocalTres());
                 intent.putExtra("imglogo", local.getImgLogo());
                 intent.putExtra("telefono", local.getTelefono());
                 intent.putExtra("color", local.getColor());

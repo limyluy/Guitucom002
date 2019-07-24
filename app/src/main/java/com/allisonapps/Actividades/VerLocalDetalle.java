@@ -37,12 +37,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allisonapps.Adaptadores.AdaptadorLocal;
+import com.allisonapps.Adaptadores.ImgLocalAdaptador;
 import com.allisonapps.Adaptadores.TangsAdaptador;
 import com.allisonapps.Adaptadores.VerDetalleAdaptador;
 import com.allisonapps.CenterZoomLayoutManager;
@@ -100,19 +102,22 @@ public class VerLocalDetalle extends AppCompatActivity {
     private RecyclerView lista;
     private Button btnGuiame;
     private CardView cardBtnLike;
-
+    private RecyclerView rcvImgLocal;
 
     //variables que se rescataran de la anterior actividad
     private String nombre;
     private String descripcion;
     private String imglogo;
-    private String imglocal;
+    private ArrayList<String> imglocal = new ArrayList<>();
     private String telefono;
     private String color;
     private GeoPoint ubicacion;
     private String direccion;
     private ArrayList tangs;
     private ArrayList<String> localesFavoritos;
+    private String imglocalUno;
+    private String imglocalDos;
+    private String imglocalTres;
 
     private boolean actualizado;
     private Activity activity;
@@ -128,7 +133,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         // encontramos los widget
         crvVerLocalDetalle = findViewById(R.id.crv_ver_local_detalle);
-        imgVerLocal = findViewById(R.id.img_local_ver_local);
+       // imgVerLocal = findViewById(R.id.img_local_ver_local);
         imgLogoLocal = findViewById(R.id.img_logo_local_detalle);
         txtDireccion = findViewById(R.id.txt_dir_local_detalle);
         txtTelefono = findViewById(R.id.txt_tel_local_detalle);
@@ -138,6 +143,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         btnGuiame = findViewById(R.id.btn_guiame_local_detalle);
         rcvVerProducto = findViewById(R.id.rcv_ver_locales_detalle);
         imgBack = findViewById(R.id.img_ic_back);
+        rcvImgLocal = findViewById(R.id.rcv_local_ver_local);
         cardBtnLike = findViewById(R.id.crv_boton_like);
 
 
@@ -149,6 +155,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         recuperarFavoritos();
         rescatarVariables();
+
         llenarLocal();
         llenarRecyclerProducto();
 
@@ -175,6 +182,17 @@ public class VerLocalDetalle extends AppCompatActivity {
         });
 
 
+    }
+
+    private void llenarRecyclerImgLocal(ArrayList<String> imglocal) {
+
+
+        ImgLocalAdaptador adapter = new ImgLocalAdaptador(this, imglocal);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rcvImgLocal.setHasFixedSize(true);
+        rcvImgLocal.setLayoutManager(llm);
+        rcvImgLocal.setAdapter(adapter);
     }
 
     private void agregarLocalesFavoritos() {
@@ -205,7 +223,6 @@ public class VerLocalDetalle extends AppCompatActivity {
         localesFavoritos = gson.fromJson(json, type);
 
 
-
         if (localesFavoritos == null) {
             localesFavoritos = new ArrayList<>();
             return;
@@ -214,10 +231,10 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         for (int i = 0; i < localesFavoritos.size(); i++) {
 
-            Log.e("recuperado",localesFavoritos.get(i));
+            Log.e("recuperado", localesFavoritos.get(i));
             if (localesFavoritos.get(i).equals(nombre)) {
                 cardBtnLike.setActivated(false);
-                Log.e("nombre",nombre);
+                Log.e("nombre", nombre);
 
                 int numero = Integer.parseInt(txtNumeroLike.getText().toString());
                 numero++;
@@ -230,10 +247,10 @@ public class VerLocalDetalle extends AppCompatActivity {
     private void llenarLocal() {
 
         // metodo para ajustar .centerCrop()
-        Log.e("weith", String.valueOf(imgVerLocal.getMaxHeight()));
-        Picasso.with(context).load(imglocal)
+//        Log.e("weith", String.valueOf(imgVerLocal.getMaxHeight()));
+       /* Picasso.with(context).load(imglocal)
                 .fit()
-                .into(imgVerLocal);
+                .into(imgVerLocal);*/
         Picasso.with(context).load(imglogo).into(imgLogoLocal);
         crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(color));
 
@@ -251,7 +268,9 @@ public class VerLocalDetalle extends AppCompatActivity {
     private void rescatarVariables() {
 
         nombre = getIntent().getStringExtra("nombre");
-        imglocal = getIntent().getStringExtra("imglocal");
+        imglocalUno = getIntent().getStringExtra("uno");
+        imglocalDos = getIntent().getStringExtra("dos");
+        imglocalTres = getIntent().getStringExtra("tres");
         imglogo = getIntent().getStringExtra("imglogo");
         telefono = getIntent().getStringExtra("telefono");
         color = getIntent().getStringExtra("color");
@@ -261,6 +280,13 @@ public class VerLocalDetalle extends AppCompatActivity {
         actualizado = getIntent().getBooleanExtra("actualizado", true);
         descripcion = getIntent().getStringExtra("descripcion");
         tangs = getIntent().getStringArrayListExtra("tangs");
+
+
+        imglocal.add(imglocalUno);
+        imglocal.add(imglocalDos);
+        imglocal.add(imglocalTres);
+
+        llenarRecyclerImgLocal(imglocal);
 
 
         ubicacion = new GeoPoint(latitud, longitud);

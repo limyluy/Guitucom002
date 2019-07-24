@@ -94,7 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 Intent intent = new Intent(MapsActivity.this, VerLocalDetalle.class);
                 intent.putExtra("nombre", local.getNombre());
-                intent.putExtra("imglocal", local.getImgLocal());
+               // intent.putExtra("imglocal", local.getImgLocal());
                 intent.putExtra("imglogo", local.getImgLogo());
                 intent.putExtra("telefono", local.getTelefono());
                 intent.putExtra("color", local.getColor());

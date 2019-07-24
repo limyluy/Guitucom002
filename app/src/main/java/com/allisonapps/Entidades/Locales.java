@@ -17,7 +17,9 @@ public class Locales {
     private boolean tarjeta;
     private boolean garaje;
     private boolean garantia;
-    private String imgLocal;
+    private String imgLocalUno;
+    private String imgLocalDos;
+    private String imgLocalTres;
     private String imgLogo;
     private long numRecomendado;
     private boolean actualizado;
@@ -28,8 +30,7 @@ public class Locales {
     public Locales() {
     }
 
-
-    public Locales(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocal, String imgLogo, long numRecomendado, Boolean actualizado, Boolean ofertas, List<String> etiquetas, String color) {
+    public Locales(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLocalUno, String imgLocalDos, String imgLocalTres, String imgLogo, long numRecomendado, boolean actualizado, boolean ofertas, List<String> etiquetas, String color) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -41,7 +42,9 @@ public class Locales {
         this.tarjeta = tarjeta;
         this.garaje = garaje;
         this.garantia = garantia;
-        this.imgLocal = imgLocal;
+        this.imgLocalUno = imgLocalUno;
+        this.imgLocalDos = imgLocalDos;
+        this.imgLocalTres = imgLocalTres;
         this.imgLogo = imgLogo;
         this.numRecomendado = numRecomendado;
         this.actualizado = actualizado;
@@ -138,12 +141,28 @@ public class Locales {
         this.garantia = garantia;
     }
 
-    public String getImgLocal() {
-        return imgLocal;
+    public String getImgLocalUno() {
+        return imgLocalUno;
     }
 
-    public void setImgLocal(String imgLocal) {
-        this.imgLocal = imgLocal;
+    public void setImgLocalUno(String imgLocalUno) {
+        this.imgLocalUno = imgLocalUno;
+    }
+
+    public String getImgLocalDos() {
+        return imgLocalDos;
+    }
+
+    public void setImgLocalDos(String imgLocalDos) {
+        this.imgLocalDos = imgLocalDos;
+    }
+
+    public String getImgLocalTres() {
+        return imgLocalTres;
+    }
+
+    public void setImgLocalTres(String imgLocalTres) {
+        this.imgLocalTres = imgLocalTres;
     }
 
     public String getImgLogo() {
