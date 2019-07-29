@@ -39,6 +39,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
 
-        Log.e("prueba", localesMapas.get(0).getNombre());
+//        Log.e("prueba", localesMapas.get(0).getNombre());
         nombre = getIntent().getStringExtra("nombre");
 
         getSupportActionBar().setTitle("Vista por ubicacion");
@@ -93,20 +94,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Locales local = localesMapas.get(i);
 
                 Intent intent = new Intent(MapsActivity.this, VerLocalDetalle.class);
-                intent.putExtra("nombre", local.getNombre());
-               // intent.putExtra("imglocal", local.getImgLocal());
-                intent.putExtra("imglogo", local.getImgLogo());
-                intent.putExtra("telefono", local.getTelefono());
-                intent.putExtra("color", local.getColor());
-                intent.putExtra("latitud", local.getUbicacion().getLatitude());
-                intent.putExtra("longitud", local.getUbicacion().getLongitude());
-                intent.putExtra("direccion", local.getDireccion());
-                intent.putExtra("actualizado", local.isActualizado());
-                intent.putExtra("descripcion", local.getDescripcion());
-                intent.putStringArrayListExtra("tangs", (ArrayList<String>) local.getEtiquetas());
-
+                Gson gson = new Gson();
+                String json = gson.toJson(local);
+                intent.putExtra("local",json);
                 startActivity(intent);
-
 
             }
         });

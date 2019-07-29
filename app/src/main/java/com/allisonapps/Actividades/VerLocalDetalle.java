@@ -1,45 +1,29 @@
 package com.allisonapps.Actividades;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentProviderOperation;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,13 +31,11 @@ import com.allisonapps.Adaptadores.AdaptadorLocal;
 import com.allisonapps.Adaptadores.ImgLocalAdaptador;
 import com.allisonapps.Adaptadores.TangsAdaptador;
 import com.allisonapps.Adaptadores.VerDetalleAdaptador;
-import com.allisonapps.CenterZoomLayoutManager;
 import com.allisonapps.Entidades.Locales;
 import com.allisonapps.Entidades.Productos;
 import com.allisonapps.R;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,18 +44,12 @@ import com.google.firebase.firestore.Query;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+
 
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
-
-import io.grpc.okhttp.internal.Util;
 
 public class VerLocalDetalle extends AppCompatActivity {
 
@@ -105,23 +81,13 @@ public class VerLocalDetalle extends AppCompatActivity {
     private RecyclerView rcvImgLocal;
 
     //variables que se rescataran de la anterior actividad
-    private String nombre;
-    private String descripcion;
-    private String imglogo;
+
     private ArrayList<String> imglocal = new ArrayList<>();
-    private String telefono;
-    private String color;
     private GeoPoint ubicacion;
-    private String direccion;
-    private ArrayList tangs;
-    private ArrayList<String> localesFavoritos;
-    private String imglocalUno;
-    private String imglocalDos;
-    private String imglocalTres;
+    private ArrayList<Locales> localesFavoritos;
     private boolean isFavorito = false;
-    private boolean actualizado;
-    private Activity activity;
     private String PalabraBuscada;
+    private Locales local;
 
 
     @Override
@@ -133,7 +99,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         // encontramos los widget
         crvVerLocalDetalle = findViewById(R.id.crv_ver_local_detalle);
-       // imgVerLocal = findViewById(R.id.img_local_ver_local);
+        // imgVerLocal = findViewById(R.id.img_local_ver_local);
         imgLogoLocal = findViewById(R.id.img_logo_local_detalle);
         txtDireccion = findViewById(R.id.txt_dir_local_detalle);
         txtTelefono = findViewById(R.id.txt_tel_local_detalle);
@@ -150,11 +116,10 @@ public class VerLocalDetalle extends AppCompatActivity {
         // inicalizamos variables
         db = FirebaseFirestore.getInstance();
         context = getApplicationContext();
-        activity = this;
+
 
         rescatarVariables();
         recuperarFavoritos();
-
         llenarLocal();
         llenarRecyclerProducto();
 
@@ -183,6 +148,7 @@ public class VerLocalDetalle extends AppCompatActivity {
 
     }
 
+    // metodo para llenar recycler de las imagenes de local
     private void llenarRecyclerImgLocal(ArrayList<String> imglocal) {
 
 
@@ -194,14 +160,15 @@ public class VerLocalDetalle extends AppCompatActivity {
         rcvImgLocal.setAdapter(adapter);
     }
 
+    // metodo para agregar locales a un array en sahrepreference
     private void agregarLocalesFavoritos() {
 
-        if (isFavorito == true){
-            Toast.makeText(context, nombre + " Ya se encuentra en tu lista de favoritos", Toast.LENGTH_LONG).show();
+        if (isFavorito == true) {
+            Toast.makeText(context, local.getNombre() + " Ya se encuentra en tu lista de favoritos", Toast.LENGTH_LONG).show();
             return;
         }
 
-        localesFavoritos.add(nombre);
+        localesFavoritos.add(local);
 
         SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -217,18 +184,19 @@ public class VerLocalDetalle extends AppCompatActivity {
 
     }
 
+    // se recupera el arrayList de locales de share preference
     private void recuperarFavoritos() {
 
         SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("favoritos", null);
-        Type type = new TypeToken<ArrayList<String>>() {
+        Type type = new TypeToken<ArrayList<Locales>>() {
         }.getType();
         localesFavoritos = gson.fromJson(json, type);
 
 
         if (localesFavoritos == null) {
-            localesFavoritos = new ArrayList<>();
+            localesFavoritos = new ArrayList<Locales>();
             Log.e("favoritos ", "bacio");
             return;
         }
@@ -236,16 +204,12 @@ public class VerLocalDetalle extends AppCompatActivity {
 
         for (int i = 0; i < localesFavoritos.size(); i++) {
 
-            Log.e("recuperado", localesFavoritos.get(i));
-
-            if (localesFavoritos.get(i).equals(nombre)) {
+            if (localesFavoritos.get(i).getNombre().equals(local.getNombre())) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     cardBtnLike.setCardBackgroundColor(getColor(R.color.colorTextoGris));
                     isFavorito = true;
                 }
-
-
 
                 int numero = Integer.parseInt(txtNumeroLike.getText().toString());
                 numero++;
@@ -255,52 +219,41 @@ public class VerLocalDetalle extends AppCompatActivity {
 
     }
 
+    // se llena los espacios con el local pasado por putExtra
     private void llenarLocal() {
 
         // metodo para ajustar .centerCrop()
-//        Log.e("weith", String.valueOf(imgVerLocal.getMaxHeight()));
-       /* Picasso.with(context).load(imglocal)
-                .fit()
-                .into(imgVerLocal);*/
-        Picasso.with(context).load(imglogo).into(imgLogoLocal);
-        crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(color));
+        Picasso.with(context).load(local.getImgLogo()).into(imgLogoLocal);
+        crvVerLocalDetalle.setCardBackgroundColor(Integer.parseInt(local.getColor()));
 
-        txtDireccion.setText(direccion);
-        txtTelefono.setText(telefono);
-        txtDescripcion.setText(descripcion);
+        txtDireccion.setText(local.getDireccion());
+        txtTelefono.setText(local.getTelefono());
+        txtDescripcion.setText(local.getDescripcion());
 
-        TangsAdaptador adapter = new TangsAdaptador(context, tangs);
+        TangsAdaptador adapter = new TangsAdaptador(context, (ArrayList) local.getEtiquetas());
         lista.setLayoutManager(new LinearLayoutManager(this));
         lista.setAdapter(adapter);
 
 
     }
 
+    // se rescatan variables mediante gson y putExtra
     private void rescatarVariables() {
 
-        nombre = getIntent().getStringExtra("nombre");
-        imglocalUno = getIntent().getStringExtra("uno");
-        imglocalDos = getIntent().getStringExtra("dos");
-        imglocalTres = getIntent().getStringExtra("tres");
-        imglogo = getIntent().getStringExtra("imglogo");
-        telefono = getIntent().getStringExtra("telefono");
-        color = getIntent().getStringExtra("color");
-        Double latitud = getIntent().getDoubleExtra("latitud", 0.0);
-        Double longitud = getIntent().getDoubleExtra("longitud", 0.0);
-        direccion = getIntent().getStringExtra("direccion");
-        actualizado = getIntent().getBooleanExtra("actualizado", true);
-        descripcion = getIntent().getStringExtra("descripcion");
-        tangs = getIntent().getStringArrayListExtra("tangs");
+        String localS = getIntent().getStringExtra("local");
+        Gson gson = new Gson();
 
+        Type type = new TypeToken<Locales>() {
+        }.getType();
+        local = gson.fromJson(localS, type);
 
-        imglocal.add(imglocalUno);
-        imglocal.add(imglocalDos);
-        imglocal.add(imglocalTres);
+        imglocal.add(local.getImgLocal().get(0));
+        imglocal.add(local.getImgLocal().get(1));
+        imglocal.add(local.getImgLocal().get(2));
 
         llenarRecyclerImgLocal(imglocal);
 
-
-        ubicacion = new GeoPoint(latitud, longitud);
+        ubicacion = local.getUbicacion();
 
 
     }
@@ -335,11 +288,11 @@ public class VerLocalDetalle extends AppCompatActivity {
                 //falta integrar pedir permiso y acomodarlo para que se haga mas fluidamente
                 //primero hay que crear el contacto en un intent y despues en otro enviar el mensaje
 
-                if (verduplicado(telefono)) {
-                    enviaMsjContacto(telefono);
+                if (verduplicado(local.getTelefono())) {
+                    enviaMsjContacto(local.getTelefono());
                 } else {
                     //falta pedir permiso para agregar contacto
-                    crearContacto(telefono, nombre);
+                    crearContacto(local.getTelefono(), local.getNombre());
                 }
 
             }
@@ -348,13 +301,13 @@ public class VerLocalDetalle extends AppCompatActivity {
 
     }
 
+    // metodo para ver si el contacto ya se encuentra agregado
     private boolean verduplicado(String telefono) {
         // Get query phone contacts cursor object.
         Uri readContactsUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         Cursor c = getContentResolver().query(readContactsUri, null, null, null, null);
 
         ArrayList<String> lista = new ArrayList<>();
-
 
         if (c != null) {
 
@@ -368,19 +321,16 @@ public class VerLocalDetalle extends AppCompatActivity {
                     return true;
                 }
 
-
             }
         } else {
             Toast.makeText(getApplicationContext(),
                     "No hay nada :(", Toast.LENGTH_LONG).show();
         }
-
-
         return false;
 
     }
 
-
+    // metodo para crear un contacto en el celular
     private void crearContacto(String telefono, String nombre) {
 
 
@@ -520,6 +470,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         adaptador.stopListening();
     }
 
+    // metodo para enviar a mapas ya con la ruta
     public static void abrirMapa(Context context, double latitude, double longitude) {
         String uri = String.format(Locale.ENGLISH, "google.navigation:q=%1$f,%2$f", latitude, longitude);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));

@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgNube1;
     private ImageView imgNube2;
     private ImageView imgNube3;
+    private Button btnFavoritos;
     private Button btnOfertas;
     private Button btnEventos;
     private Button btnDescuentos;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         imgNube1 = findViewById(R.id.img_nube1);
         imgNube2 = findViewById(R.id.img_nube2);
         imgNube3 = findViewById(R.id.img_nube3);
+        btnFavoritos = findViewById(R.id.btn_favoritos);
         btnOfertas = findViewById(R.id.btn_ofertas);
         btnEventos = findViewById(R.id.btn_eventos);
         btnDescuentos = findViewById(R.id.btn_descuentos);
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         crdBarra = findViewById(R.id.crv_barra_busqueda);
 
 
+        // animaciones para los botones
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             animacionesEntrada();
         }
@@ -123,6 +126,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // lleva a activity LocalesLista lleva un putExtra para dar a conocer de que puerta llega
+        btnFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocalesLista.class);
+                intent.putExtra("nombre", "favoritos");
+                startActivity(intent);
+            }
+        });
+        // lleva a activity LocalesLista lleva un putExtra para dar a conocer de que puerta llega
         btnOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent, options.toBundle());
             }
         });
-
+        // lleva a activity LocalesLista lleva un putExtra para dar a conocer de que puerta llega
         btnEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        // lleva a activity LocalesLista lleva un putExtra para dar a conocer de que puerta llega
         btnDescuentos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Lo sentimos aun no esta habilitado", Toast.LENGTH_LONG).show();
             }
         });
-
+        // lleva a activity LocalesLista lleva un putExtra para dar a conocer de que puerta llega
         btnLugaresInteres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

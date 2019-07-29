@@ -1,6 +1,7 @@
 package com.allisonapps.Adaptadores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allisonapps.Actividades.LocalesLista;
 import com.allisonapps.R;
+import com.allisonapps.SujerenciasBusqueda;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
@@ -42,7 +45,9 @@ public class TangsAdaptador extends RecyclerView.Adapter<TangsAdaptador.TangsVie
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, String.valueOf(list.get(i)), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, LocalesLista.class);
+                intent.putExtra("nombre", list.get(i));
+                context.startActivity(intent);
             }
         });
 

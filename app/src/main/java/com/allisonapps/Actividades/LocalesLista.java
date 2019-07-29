@@ -21,16 +21,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allisonapps.Adaptadores.AdaptadorLocal;
+import com.allisonapps.Adaptadores.FavoritosLocalesAdaptador;
 import com.allisonapps.Entidades.Locales;
+import com.allisonapps.MainActivity;
 import com.allisonapps.MapsActivity;
 import com.allisonapps.R;
 import com.allisonapps.SujerenciasBusqueda;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -47,6 +56,8 @@ public class LocalesLista extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference reference = db.collection("locales");
     private AdaptadorLocal adaptador;
+    private Context contex;
+    private boolean favoritos = false;
 
 
     @Override
@@ -65,6 +76,8 @@ public class LocalesLista extends AppCompatActivity {
         getSupportActionBar().setTitle("Aqui Encontraras " + nombre);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        contex = this;
+
 
         // boton para mapa
         fabMapa.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +94,47 @@ public class LocalesLista extends AppCompatActivity {
             }
         });
 
+        // verifica si viene de favoritos para llenar un diferente adaptador
+        if (nombre.equals("favoritos")){
+            favoritos = true;
+            llenarrecyclerFavoritos();
+        }else {
+            llenarrecycler(conseguirQuery(nombre));
+        }
+    }
 
-        llenarrecycler(conseguirQuery(nombre));
+    private void llenarrecyclerFavoritos() {
+
+        ArrayList<Locales> localesFavoritos = new ArrayList<>();
+        SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = preferences.getString("favoritos", null);
+        Type type = new TypeToken<ArrayList<Locales>>() {
+        }.getType();
+
+        localesFavoritos = gson.fromJson(json, type);
+
+
+        if (localesFavoritos == null) {
+            localesFavoritos = new ArrayList<>();
+            Log.e("favoritos ", "bacio");
+
+            Toast.makeText(contex, "No tienes aun locales favoritos", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+
+        FavoritosLocalesAdaptador adaptador2 = new FavoritosLocalesAdaptador(contex, localesFavoritos);
+        rcvLocales = findViewById(R.id.rcv_locales);
+        rcvLocales.setHasFixedSize(true);
+        rcvLocales.setLayoutManager(new LinearLayoutManager(this));
+        rcvLocales.setAdapter(adaptador2);
+
+
+
+
+
     }
 
     private Query conseguirQuery(String nombre) {
@@ -122,27 +174,23 @@ public class LocalesLista extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Locales local = documentSnapshot.toObject(Locales.class);
                 Intent intent = new Intent(LocalesLista.this, VerLocalDetalle.class);
-                intent.putExtra("nombre", local.getNombre());
-                intent.putExtra("dos", local.getImgLocalDos());
-                intent.putExtra("uno", local.getImgLocalUno());
-                intent.putExtra("tres", local.getImgLocalTres());
-                intent.putExtra("imglogo", local.getImgLogo());
-                intent.putExtra("telefono", local.getTelefono());
-                intent.putExtra("color", local.getColor());
-                intent.putExtra("latitud", local.getUbicacion().getLatitude());
-                intent.putExtra("longitud", local.getUbicacion().getLongitude());
-                intent.putExtra("direccion", local.getDireccion());
-                intent.putExtra("actualizado", local.isActualizado());
-                intent.putExtra("descripcion", local.getDescripcion());
-                intent.putStringArrayListExtra("tangs", (ArrayList<String>) local.getEtiquetas());
 
+
+
+                Gson gson = new Gson();
+                String json = gson.toJson(local);
+
+                intent.putExtra("local",json);
                 startActivity(intent);
+
 
             }
         });
 
 
     }
+
+    // metodo para rescatar el orden en que prefiere mirar los resultados
     public String preferenciaTraer(){
 
         SharedPreferences prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
@@ -164,8 +212,12 @@ public class LocalesLista extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_locales_lista, menu);
+        if (!favoritos) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_locales_lista, menu);
+
+            return super.onCreateOptionsMenu(menu);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -205,6 +257,7 @@ public class LocalesLista extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // metodo para ordenar los resultados a gusto del cliente
     private Query conseguirQueryCategorizar(String nombre, String categoria) {
 
         Query query;
@@ -222,20 +275,26 @@ public class LocalesLista extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(LocalesLista.this, SujerenciasBusqueda.class);
-        intent.putExtra("clave",nombre);
-        startActivity(intent);
+
+        // se juzga si viene de MainActivity para hacer un regreso optimo en la navegacion
+        if(favoritos || nombre.equals("oferta") || nombre.equals("evento") || nombre.equals("lugar") ) {
+            startActivity(new Intent(LocalesLista.this, MainActivity.class));
+        }else {
+            Intent intent = new Intent(LocalesLista.this, SujerenciasBusqueda.class);
+            intent.putExtra("clave", nombre);
+            startActivity(intent);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        adaptador.startListening();
+        if (!favoritos) adaptador.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        adaptador.stopListening();
+        if (!favoritos) adaptador.stopListening();
     }
 }
