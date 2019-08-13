@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Locales {
 
+    private String id;
+    private String idCliente;
     private String nombre;
     private String direccion;
     private String telefono;
@@ -19,18 +21,20 @@ public class Locales {
     private boolean garaje;
     private boolean garantia;
     private String imgLogo;
-    private ArrayList<String> imgLocal;
+    private ArrayList<String> imagenesLocal;
     private ArrayList<String> etiquetas;
     private ArrayList<String> productos;
     private long numRecomendado;
-    private boolean actualizado;
+    private Boolean actualizado;
     private String color;
-    private boolean ofertas;
+    private Boolean ofertas;
 
     public Locales() {
     }
 
-    public Locales(String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLogo, ArrayList<String> imgLocal, ArrayList<String> etiquetas, ArrayList<String> productos, long numRecomendado, boolean actualizado, String color, boolean ofertas) {
+    public Locales(String id, String idCliente, String nombre, String direccion, String telefono, String descripcion, GeoPoint ubicacion, int atencion, int calidad, int precio, boolean tarjeta, boolean garaje, boolean garantia, String imgLogo, ArrayList<String> imagenesLocal, ArrayList<String> etiquetas, ArrayList<String> productos, long numRecomendado, Boolean actualizado, String color, Boolean ofertas) {
+        this.id = id;
+        this.idCliente = idCliente;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -43,13 +47,29 @@ public class Locales {
         this.garaje = garaje;
         this.garantia = garantia;
         this.imgLogo = imgLogo;
-        this.imgLocal = imgLocal;
+        this.imagenesLocal = imagenesLocal;
         this.etiquetas = etiquetas;
         this.productos = productos;
         this.numRecomendado = numRecomendado;
         this.actualizado = actualizado;
         this.color = color;
         this.ofertas = ofertas;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getNombre() {
@@ -148,12 +168,12 @@ public class Locales {
         this.imgLogo = imgLogo;
     }
 
-    public ArrayList<String> getImgLocal() {
-        return imgLocal;
+    public ArrayList<String> getImagenesLocal() {
+        return imagenesLocal;
     }
 
-    public void setImgLocal(ArrayList<String> imgLocal) {
-        this.imgLocal = imgLocal;
+    public void setImagenesLocal(ArrayList<String> imagenesLocal) {
+        this.imagenesLocal = imagenesLocal;
     }
 
     public ArrayList<String> getEtiquetas() {
@@ -180,11 +200,11 @@ public class Locales {
         this.numRecomendado = numRecomendado;
     }
 
-    public boolean isActualizado() {
+    public Boolean getActualizado() {
         return actualizado;
     }
 
-    public void setActualizado(boolean actualizado) {
+    public void setActualizado(Boolean actualizado) {
         this.actualizado = actualizado;
     }
 
@@ -196,11 +216,11 @@ public class Locales {
         this.color = color;
     }
 
-    public boolean isOfertas() {
+    public Boolean getOfertas() {
         return ofertas;
     }
 
-    public void setOfertas(boolean ofertas) {
+    public void setOfertas(Boolean ofertas) {
         this.ofertas = ofertas;
     }
 }

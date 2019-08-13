@@ -30,7 +30,7 @@ import java.util.Locale;
 public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLocal.LocalHolder> {
     Context context;
     AdaptadorLocal.OnItemClickListener listener;
-    private ArrayList<Locales> locales = new ArrayList<>();
+    ArrayList<Locales> locales = new ArrayList<>();
 
     public AdaptadorLocal(@NonNull FirestoreRecyclerOptions<Locales> options, Context context) {
         super(options);
@@ -41,8 +41,9 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
     @Override
     protected void onBindViewHolder(@NonNull LocalHolder holder, int position, @NonNull final Locales model) {
 
-        locales.add(model);
+
 //        Log.e("pasado",locales.get(position).getNombre());
+
 
         String color = model.getColor();
 
@@ -50,12 +51,11 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         holder.calidad.setMax(5);
         holder.precio.setMax(5);
 
-        if (model.isActualizado()){
+        if (model.getActualizado()){
             holder.txtActializado.setBackgroundResource(R.color.colorActualizado);
         }else{
             holder.txtActializado.setBackgroundResource(R.color.colorNoActualizado);
         }
-
 
         holder.titulo.setText(model.getNombre());
         holder.descripcion.setText(model.getDescripcion());
@@ -66,7 +66,7 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
         holder.atencion.setProgress(model.getAtencion());
         holder.calidad.setProgress(model.getCalidad());
         holder.precio.setProgress(model.getPrecio());
-        holder.imgOferta.setVisibility(model.isOfertas() ? View.VISIBLE : View.INVISIBLE);
+        holder.imgOferta.setVisibility(model.getOfertas() ? View.VISIBLE : View.INVISIBLE);
         holder.tagerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +157,6 @@ public class AdaptadorLocal extends FirestoreRecyclerAdapter<Locales,AdaptadorLo
                     }
                 }
             });
-
 
         }
 

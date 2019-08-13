@@ -19,6 +19,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VerDetalleAdaptador extends FirestoreRecyclerAdapter<Productos, VerDetalleAdaptador.VerDetalleViewHolder> {
@@ -26,6 +27,7 @@ public class VerDetalleAdaptador extends FirestoreRecyclerAdapter<Productos, Ver
 
     private Context context;
     AdaptadorLocal.OnItemClickListener listener;
+    private ArrayList<Productos> productos = new ArrayList<>();
     public VerDetalleAdaptador(@NonNull FirestoreRecyclerOptions<Productos> options,Context context) {
         super(options);
         this.context = context;
@@ -33,6 +35,10 @@ public class VerDetalleAdaptador extends FirestoreRecyclerAdapter<Productos, Ver
 
     @Override
     protected void onBindViewHolder(@NonNull VerDetalleViewHolder holder, int position, @NonNull final Productos model) {
+
+        Productos producto = model;
+
+        productos.add(producto);
 
         holder.nombre.setText(model.getNombre());
 //        holder.descripcion.setText(model.getDescripcion());
@@ -93,6 +99,11 @@ public class VerDetalleAdaptador extends FirestoreRecyclerAdapter<Productos, Ver
 
         }
 
+    }
+
+    public ArrayList<Productos> getProductos(){
+
+        return productos;
     }
 
     public interface OnItemClickListener {

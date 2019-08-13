@@ -1,11 +1,16 @@
 package com.allisonapps.Actividades;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Parcelable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +51,10 @@ import java.util.ArrayList;
 public class LocalesLista extends AppCompatActivity {
 
 
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1 ;
+
+
+
     // widgets
     private FloatingActionButton fabMapa;
     private String nombre;
@@ -84,7 +93,6 @@ public class LocalesLista extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 ArrayList<Locales> arrayList = adaptador.obtenerLocales();
                 Intent intent = new Intent(LocalesLista.this, MapsActivity.class);
                 intent.putExtra("nombre", nombre);
@@ -95,10 +103,10 @@ public class LocalesLista extends AppCompatActivity {
         });
 
         // verifica si viene de favoritos para llenar un diferente adaptador
-        if (nombre.equals("favoritos")){
+        if (nombre.equals("favoritos")) {
             favoritos = true;
             llenarrecyclerFavoritos();
-        }else {
+        } else {
             llenarrecycler(conseguirQuery(nombre));
         }
     }
@@ -130,9 +138,6 @@ public class LocalesLista extends AppCompatActivity {
         rcvLocales.setHasFixedSize(true);
         rcvLocales.setLayoutManager(new LinearLayoutManager(this));
         rcvLocales.setAdapter(adaptador2);
-
-
-
 
 
     }
@@ -176,11 +181,10 @@ public class LocalesLista extends AppCompatActivity {
                 Intent intent = new Intent(LocalesLista.this, VerLocalDetalle.class);
 
 
-
                 Gson gson = new Gson();
                 String json = gson.toJson(local);
 
-                intent.putExtra("local",json);
+                intent.putExtra("local", json);
                 startActivity(intent);
 
 
@@ -191,10 +195,10 @@ public class LocalesLista extends AppCompatActivity {
     }
 
     // metodo para rescatar el orden en que prefiere mirar los resultados
-    public String preferenciaTraer(){
+    public String preferenciaTraer() {
 
         SharedPreferences prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
-        String categoria = prefs.getString("categoria","atencion");
+        String categoria = prefs.getString("categoria", "atencion");
 
         return categoria;
     }
@@ -277,9 +281,9 @@ public class LocalesLista extends AppCompatActivity {
     public void onBackPressed() {
 
         // se juzga si viene de MainActivity para hacer un regreso optimo en la navegacion
-        if(favoritos || nombre.equals("oferta") || nombre.equals("evento") || nombre.equals("lugar") ) {
+        if (favoritos || nombre.equals("oferta") || nombre.equals("evento") || nombre.equals("lugar")) {
             startActivity(new Intent(LocalesLista.this, MainActivity.class));
-        }else {
+        } else {
             Intent intent = new Intent(LocalesLista.this, SujerenciasBusqueda.class);
             intent.putExtra("clave", nombre);
             startActivity(intent);

@@ -57,7 +57,7 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         holder.calidad.setMax(5);
         holder.precio.setMax(5);
 
-        if (localeCurrent.isActualizado()){
+        if (localeCurrent.getActualizado()){
             holder.txtActializado.setBackgroundResource(R.color.colorActualizado);
         }else{
             holder.txtActializado.setBackgroundResource(R.color.colorNoActualizado);
@@ -73,7 +73,7 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         holder.atencion.setProgress(localeCurrent.getAtencion());
         holder.calidad.setProgress(localeCurrent.getCalidad());
         holder.precio.setProgress(localeCurrent.getPrecio());
-        holder.imgOferta.setVisibility(localeCurrent.isOfertas() ? View.VISIBLE : View.INVISIBLE);
+        holder.imgOferta.setVisibility(localeCurrent.getOfertas() ? View.VISIBLE : View.INVISIBLE);
         holder.tagerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

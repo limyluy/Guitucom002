@@ -44,6 +44,7 @@ public class ImgLocalAdaptador extends RecyclerView.Adapter<ImgLocalAdaptador.Ta
         Uri uri = Uri.parse(list.get(i));
         Picasso.with(context).load(uri).into(holder.imgLocal);
 
+
     }
 
 

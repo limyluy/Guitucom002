@@ -1,5 +1,6 @@
 package com.allisonapps.Actividades;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.ContentProviderOperation;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -53,8 +56,11 @@ import java.util.Locale;
 
 public class VerLocalDetalle extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+
     // nombre de la collencion de firebase
     private static final String PRODUCTOS = "productos";
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     // en easta actividad tratamos de enviar un mensaje a wasapt agregando nosotro el texto y
     // tambien el contacto si el usuario lo permite
@@ -247,9 +253,9 @@ public class VerLocalDetalle extends AppCompatActivity {
         }.getType();
         local = gson.fromJson(localS, type);
 
-        imglocal.add(local.getImgLocal().get(0));
-        imglocal.add(local.getImgLocal().get(1));
-        imglocal.add(local.getImgLocal().get(2));
+        imglocal.add(local.getImagenesLocal().get(0));
+        imglocal.add(local.getImagenesLocal().get(1));
+        imglocal.add(local.getImagenesLocal().get(2));
 
         llenarRecyclerImgLocal(imglocal);
 
@@ -288,11 +294,46 @@ public class VerLocalDetalle extends AppCompatActivity {
                 //falta integrar pedir permiso y acomodarlo para que se haga mas fluidamente
                 //primero hay que crear el contacto en un intent y despues en otro enviar el mensaje
 
-                if (verduplicado(local.getTelefono())) {
-                    enviaMsjContacto(local.getTelefono());
+               Productos producto = adaptador.getProductos().get(position);
+
+
+
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(VerLocalDetalle.this,
+                        Manifest.permission.READ_CONTACTS)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Permission is not granted
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(VerLocalDetalle.this,
+                            Manifest.permission.READ_CONTACTS)) {
+                        // Show an explanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+                      enviaMsjNoContacto(local.getTelefono());
+                    } else {
+                        // No explanation needed; request the permission
+                        ActivityCompat.requestPermissions(VerLocalDetalle.this,
+                                new String[]{Manifest.permission.READ_CONTACTS},
+                                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+
+                    }
                 } else {
-                    //falta pedir permiso para agregar contacto
-                    crearContacto(local.getTelefono(), local.getNombre());
+
+                    if (esDuplicado(local.getTelefono())) {
+                        enviaMsjContacto(local.getTelefono(),producto.getNombre());
+                    } else {
+                        //falta pedir permiso para agregar contacto
+                        crearContacto(local.getTelefono(), local.getNombre());
+                    }
+
+
+
                 }
 
             }
@@ -302,7 +343,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     }
 
     // metodo para ver si el contacto ya se encuentra agregado
-    private boolean verduplicado(String telefono) {
+    private boolean esDuplicado(String telefono) {
         // Get query phone contacts cursor object.
         Uri readContactsUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         Cursor c = getContentResolver().query(readContactsUri, null, null, null, null);
@@ -316,7 +357,7 @@ public class VerLocalDetalle extends AppCompatActivity {
             while (c.moveToNext()) {
 
                 String usuario = c.getString(i);
-                if (usuario.equals(telefono)) {
+                if (usuario.equals("+" + telefono)) {
                     Log.e("numero allado", usuario);
                     return true;
                 }
@@ -325,6 +366,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(),
                     "No hay nada :(", Toast.LENGTH_LONG).show();
+
         }
         return false;
 
@@ -360,10 +402,12 @@ public class VerLocalDetalle extends AppCompatActivity {
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                     .withValue(ContactsContract.Data.MIMETYPE,
                             ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, telefono)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "+" + telefono)
                     .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
                             ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
                     .build());
+
+            Toast.makeText(context, "Hemos agregado a " + nombre + " en tu lista de contactos", Toast.LENGTH_LONG).show();
         }
 
         try {
@@ -377,7 +421,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     }
 
     // lo envia si tenemos el contacto icnluido el mensaje
-    private void enviaMsjContacto(String telefono) {
+    private void enviaMsjContacto(String telefono, String producto) {
 
         boolean isWhatsappInstalled = whatsappInstalledOrNot("com.whatsapp");
         if (isWhatsappInstalled) {
@@ -385,8 +429,8 @@ public class VerLocalDetalle extends AppCompatActivity {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "ollllla");
-                sendIntent.putExtra("jid", "573183088222" + "@s.whatsapp.net");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Necesito mas informacion de: " + producto );
+                sendIntent.putExtra("jid", telefono + "@s.whatsapp.net");
                 // phone number without "+" prefix
                 sendIntent.setPackage("com.whatsapp");
                 startActivity(sendIntent);
@@ -483,4 +527,33 @@ public class VerLocalDetalle extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                    enviaMsjNoContacto(local.getTelefono());
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
+  
+
 }
