@@ -3,15 +3,22 @@ package com.allisonapps.Adaptadores;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,13 +31,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLocalesAdaptador.LocalesViewHolder> {
     Context context;
     ArrayList<Locales> list;
-    AdaptadorLocal.OnItemClickListener listener;
+   FavoritosLocalesAdaptador.OnItemClickListener listener;
 
 
     public FavoritosLocalesAdaptador(Context context, ArrayList<Locales> list) {
@@ -104,6 +113,7 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
             }
         });
 
+       // necesita cambio para realizar accion sin internet
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +128,11 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
                 context.startActivity(intent);
             }
         });
+
+
+        Log.e("path de imagen",localeCurrent.getImgLogo());
+        Uri myUri = (Uri.parse(localeCurrent.getImgLogo().toString()));
+        holder.logo.setImageURI(myUri);
     }
 
 
@@ -146,7 +161,7 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         TextView numRecomendado;
 
 
-        public LocalesViewHolder(@NonNull View itemView) {
+        public LocalesViewHolder(@NonNull final View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.card_locales);
             titulo = itemView.findViewById(R.id.txt_nombre_local);
@@ -167,6 +182,48 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
 
 
 
+            card.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(card.getContext(), itemView);
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.menu_detalle:
+
+                                    return true;
+                                case R.id.menu_borrar:
+
+                                    return true;
+                                case R.id.menu_compartir:
+
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
+                    // here you can inflate your menu
+                    // DEJAMOS PARA MENU POP UP
+                    popup.inflate(R.menu.menu_favoritos);
+
+                     popup.setGravity(Gravity.RIGHT);
+
+                    // if you want icon with menu items then write this try-catch block.
+                    try {
+                        Field mFieldPopup=popup.getClass().getDeclaredField("mPopup");
+                        mFieldPopup.setAccessible(true);
+                        MenuPopupHelper mPopup = (MenuPopupHelper) mFieldPopup.get(popup);
+                      //  mPopup.setForceShowIcon(true);
+                    } catch (Exception e) {
+
+                    }
+                    popup.show();
+                }
+            });
 
 
 
@@ -177,7 +234,7 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         void onItemClick(Locales local, int position);
     }
 
-    public void setOnItemClickListener(AdaptadorLocal.OnItemClickListener listener) {
+    public void setOnItemClickListener(FavoritosLocalesAdaptador.OnItemClickListener listener) {
         this.listener = listener;
     }
 

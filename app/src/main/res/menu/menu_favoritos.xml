@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+
+
+
+            <item
+                android:id="@+id/menu_detalle"
+                android:title="detalle"
+
+                />
+            <item android:id="@+id/menu_borrar"
+                android:title="borrar"
+                android:icon="@drawable/ic_apoyar"
+                />
+
+            <item android:id="@+id/menu_compartir"
+                android:title="compartir"
+                android:icon="@drawable/ic_premio"
+
+                />
+
+
+
+
+
+
+
+
+
+
+
+</menu>

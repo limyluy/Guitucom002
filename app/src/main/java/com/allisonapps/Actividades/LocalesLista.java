@@ -1,6 +1,7 @@
 package com.allisonapps.Actividades;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -51,8 +52,7 @@ import java.util.ArrayList;
 public class LocalesLista extends AppCompatActivity {
 
 
-    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1 ;
-
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
 
     // widgets
@@ -69,6 +69,7 @@ public class LocalesLista extends AppCompatActivity {
     private boolean favoritos = false;
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +107,9 @@ public class LocalesLista extends AppCompatActivity {
         if (nombre.equals("favoritos")) {
             favoritos = true;
             llenarrecyclerFavoritos();
+            // problema
+            fabMapa.setVisibility(View.INVISIBLE);
+
         } else {
             llenarrecycler(conseguirQuery(nombre));
         }
@@ -138,6 +142,8 @@ public class LocalesLista extends AppCompatActivity {
         rcvLocales.setHasFixedSize(true);
         rcvLocales.setLayoutManager(new LinearLayoutManager(this));
         rcvLocales.setAdapter(adaptador2);
+
+
 
 
     }
@@ -174,6 +180,7 @@ public class LocalesLista extends AppCompatActivity {
         rcvLocales.setLayoutManager(new LinearLayoutManager(this));
         rcvLocales.setAdapter(adaptador);
 
+
         adaptador.setOnItemClickListener(new AdaptadorLocal.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -189,7 +196,9 @@ public class LocalesLista extends AppCompatActivity {
 
 
             }
+
         });
+
 
 
     }

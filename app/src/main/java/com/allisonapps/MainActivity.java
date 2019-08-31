@@ -1,7 +1,10 @@
 package com.allisonapps;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +32,8 @@ import com.allisonapps.Actividades.LocalesLista;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    public static boolean isInternet = false;
 
     //witget
     private TextView txtGuiatu;
@@ -56,10 +62,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle("");
+        isInternet = isNetDisponible() && isOnlineNet();
+        Log.e("is internet",String.valueOf(isInternet));
+
 
 
         // linea para dar soporte a la creacion de graficos con vectores
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+
+
 
 
         // encontrar los witget de la activity main
@@ -83,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             animacionesEntrada();
         }
+
+
 
 
         // seteamos el tipo de fuente de los texview
@@ -182,7 +196,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (!isInternet){
 
+            funcionarLimitadamente();
+        }
+
+
+    }
+
+    private void funcionarLimitadamente() {
+
+        btnOfertas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "No disponible sin internet", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnEventos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "No disponible sin internet", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnDescuentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "No disponible sin internet", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnLugaresInteres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "No disponible sin internet", Toast.LENGTH_SHORT).show();
+            }
+        });  btnOfertas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "No disponible sin internet", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // metodo para realizar animaciones
@@ -247,5 +299,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNetDisponible() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+
+    public Boolean isOnlineNet() {
+
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+
+            int val           = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 }

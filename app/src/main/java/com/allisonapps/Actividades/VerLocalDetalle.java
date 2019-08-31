@@ -9,9 +9,16 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -36,20 +43,36 @@ import com.allisonapps.Adaptadores.TangsAdaptador;
 import com.allisonapps.Adaptadores.VerDetalleAdaptador;
 import com.allisonapps.Entidades.Locales;
 import com.allisonapps.Entidades.Productos;
+
 import com.allisonapps.R;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -94,6 +117,7 @@ public class VerLocalDetalle extends AppCompatActivity {
     private boolean isFavorito = false;
     private String PalabraBuscada;
     private Locales local;
+    private FirebaseStorage storage;
 
 
     @Override
@@ -122,6 +146,7 @@ public class VerLocalDetalle extends AppCompatActivity {
         // inicalizamos variables
         db = FirebaseFirestore.getInstance();
         context = getApplicationContext();
+        storage = FirebaseStorage.getInstance();
 
 
         rescatarVariables();
@@ -169,24 +194,56 @@ public class VerLocalDetalle extends AppCompatActivity {
     // metodo para agregar locales a un array en sahrepreference
     private void agregarLocalesFavoritos() {
 
-        if (isFavorito == true) {
+      /*  if (isFavorito == true) {
             Toast.makeText(context, local.getNombre() + " Ya se encuentra en tu lista de favoritos", Toast.LENGTH_LONG).show();
             return;
+        }*/
+
+        final String url = String.valueOf(local.getImgLogo());
+        StorageReference httpsReference = storage.getReferenceFromUrl(url);
+
+
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("logo", "jpg");
+            final File finalLocalFile = localFile;
+            httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+
+                    String urlocal = finalLocalFile.getPath();
+                    Log.e("ubicacion",urlocal);
+                    local.setImgLogo("");
+                    local.setImgLogo(urlocal);
+
+                    localesFavoritos.add(local);
+
+                    SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(localesFavoritos);
+                    editor.putString("favoritos", json);
+                    editor.apply();
+
+                    int numero = Integer.parseInt(txtNumeroLike.getText().toString());
+                    numero++;
+                    txtNumeroLike.setText(String.valueOf(numero));
+
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
         }
-
-        localesFavoritos.add(local);
-
-        SharedPreferences preferences = getSharedPreferences("Localesfavoritos", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(localesFavoritos);
-        editor.putString("favoritos", json);
-        editor.apply();
-
-        int numero = Integer.parseInt(txtNumeroLike.getText().toString());
-        numero++;
-        txtNumeroLike.setText(String.valueOf(numero));
-
 
     }
 
@@ -294,8 +351,7 @@ public class VerLocalDetalle extends AppCompatActivity {
                 //falta integrar pedir permiso y acomodarlo para que se haga mas fluidamente
                 //primero hay que crear el contacto en un intent y despues en otro enviar el mensaje
 
-               Productos producto = adaptador.getProductos().get(position);
-
+                Productos producto = adaptador.getProductos().get(position);
 
 
                 // Here, thisActivity is the current activity
@@ -310,7 +366,7 @@ public class VerLocalDetalle extends AppCompatActivity {
                         // Show an explanation to the user *asynchronously* -- don't block
                         // this thread waiting for the user's response! After the user
                         // sees the explanation, try again to request the permission.
-                      enviaMsjNoContacto(local.getTelefono());
+                        enviaMsjNoContacto(local.getTelefono());
                     } else {
                         // No explanation needed; request the permission
                         ActivityCompat.requestPermissions(VerLocalDetalle.this,
@@ -326,12 +382,11 @@ public class VerLocalDetalle extends AppCompatActivity {
                 } else {
 
                     if (esDuplicado(local.getTelefono())) {
-                        enviaMsjContacto(local.getTelefono(),producto.getNombre());
+                        enviaMsjContacto(local.getTelefono(), producto.getNombre());
                     } else {
                         //falta pedir permiso para agregar contacto
                         crearContacto(local.getTelefono(), local.getNombre());
                     }
-
 
 
                 }
@@ -429,7 +484,7 @@ public class VerLocalDetalle extends AppCompatActivity {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Necesito mas informacion de: " + producto );
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Necesito mas informacion de: " + producto);
                 sendIntent.putExtra("jid", telefono + "@s.whatsapp.net");
                 // phone number without "+" prefix
                 sendIntent.setPackage("com.whatsapp");
@@ -554,6 +609,61 @@ public class VerLocalDetalle extends AppCompatActivity {
         }
     }
 
-  
+
+    //save image
+    public static Target imageDownload(Context ctx, String url, String ubicacion) {
+
+        Target target = getTarget(ubicacion);
+        Picasso.with(ctx)
+                .load(url)
+                .into(target);
+
+
+        return target;
+    }
+
+    //target to save
+    private static Target getTarget(final String ubicacion) {
+        Target target = new Target() {
+
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + ubicacion);
+                        try {
+                            file.createNewFile();
+                            FileOutputStream ostream = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                            ostream.flush();
+                            ostream.close();
+
+                        } catch (IOException e) {
+                            Log.e("IOException", e.getLocalizedMessage());
+                        }
+
+
+                    }
+                }).start();
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+
+
+        return target;
+    }
 
 }
