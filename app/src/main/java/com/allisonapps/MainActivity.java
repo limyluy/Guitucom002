@@ -1,11 +1,14 @@
 package com.allisonapps;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allisonapps.Actividades.LocalesLista;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -95,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             animacionesEntrada();
         }
+
+        // activamos notificaiones
+        activarNotificaciones();
 
 
 
@@ -325,5 +334,32 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return false;
+    }
+
+
+    // metodo para activar las notificaciones
+    public void activarNotificaciones() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel =
+                    new NotificationChannel("MyNotifycaction", "MyNotifycaction", NotificationManager.IMPORTANCE_DEFAULT);
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("tecnologia")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Exito";
+                        if (!task.isSuccessful()) {
+                            msg = "fallo";
+                        }
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                });
     }
 }

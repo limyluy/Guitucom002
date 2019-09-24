@@ -194,10 +194,10 @@ public class VerLocalDetalle extends AppCompatActivity {
     // metodo para agregar locales a un array en sahrepreference
     private void agregarLocalesFavoritos() {
 
-      /*  if (isFavorito == true) {
+        if (isFavorito == true) {
             Toast.makeText(context, local.getNombre() + " Ya se encuentra en tu lista de favoritos", Toast.LENGTH_LONG).show();
             return;
-        }*/
+        }
 
         final String url = String.valueOf(local.getImgLogo());
         StorageReference httpsReference = storage.getReferenceFromUrl(url);

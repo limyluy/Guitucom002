@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allisonapps.Actividades.DetalleLocalNoInternet;
 import com.allisonapps.Actividades.LocalesLista;
 import com.allisonapps.Actividades.VerLocalDetalle;
 import com.allisonapps.Entidades.Locales;
@@ -39,7 +40,7 @@ import java.util.Locale;
 public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLocalesAdaptador.LocalesViewHolder> {
     Context context;
     ArrayList<Locales> list;
-   FavoritosLocalesAdaptador.OnItemClickListener listener;
+    FavoritosLocalesAdaptador.OnItemClickListener listener;
 
 
     public FavoritosLocalesAdaptador(Context context, ArrayList<Locales> list) {
@@ -66,18 +67,18 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         holder.calidad.setMax(5);
         holder.precio.setMax(5);
 
-        if (localeCurrent.getActualizado()){
+        if (localeCurrent.getActualizado()) {
             holder.txtActializado.setBackgroundResource(R.color.colorActualizado);
-        }else{
+        } else {
             holder.txtActializado.setBackgroundResource(R.color.colorNoActualizado);
         }
 
 
         holder.titulo.setText(localeCurrent.getNombre());
         holder.descripcion.setText(localeCurrent.getDescripcion());
-        holder.garaje.setVisibility(localeCurrent.isGaraje()? View.VISIBLE : View.INVISIBLE);
-        holder.tagerta.setVisibility(localeCurrent.isTarjeta()? View.VISIBLE : View.INVISIBLE);
-        holder.garantia.setVisibility(localeCurrent.isGarantia()? View.VISIBLE : View.INVISIBLE);
+        holder.garaje.setVisibility(localeCurrent.isGaraje() ? View.VISIBLE : View.INVISIBLE);
+        holder.tagerta.setVisibility(localeCurrent.isTarjeta() ? View.VISIBLE : View.INVISIBLE);
+        holder.garantia.setVisibility(localeCurrent.isGarantia() ? View.VISIBLE : View.INVISIBLE);
         holder.fondo.setBackgroundColor(Integer.parseInt(localeCurrent.getColor()));
         holder.atencion.setProgress(localeCurrent.getAtencion());
         holder.calidad.setProgress(localeCurrent.getCalidad());
@@ -109,28 +110,27 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
             @Override
             public void onClick(View v) {
 
-                navigateExternalTo(context,localeCurrent.getUbicacion().getLatitude(),localeCurrent.getUbicacion().getLongitude());
+                navigateExternalTo(context, localeCurrent.getUbicacion().getLatitude(), localeCurrent.getUbicacion().getLongitude());
             }
         });
 
-       // necesita cambio para realizar accion sin internet
-        holder.card.setOnClickListener(new View.OnClickListener() {
+        // necesita cambio para realizar accion sin internet
+    /*    holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, VerLocalDetalle.class);
 
 
-
                 Gson gson = new Gson();
                 String json = gson.toJson(localeCurrent);
 
-                intent.putExtra("local",json);
+                intent.putExtra("local", json);
                 context.startActivity(intent);
             }
-        });
+        });*/
 
 
-        Log.e("path de imagen",localeCurrent.getImgLogo());
+        Log.e("path de imagen", localeCurrent.getImgLogo());
         Uri myUri = (Uri.parse(localeCurrent.getImgLogo().toString()));
         holder.logo.setImageURI(myUri);
     }
@@ -181,7 +181,6 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
             txtActializado = itemView.findViewById(R.id.txt_actualizado_locales_card);
 
 
-
             card.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
@@ -193,7 +192,11 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.menu_detalle:
-
+                                    Intent intent = new Intent(context, DetalleLocalNoInternet.class);
+                                    Gson gson = new Gson();
+                                    String json = gson.toJson(list.get(getAdapterPosition()));
+                                    intent.putExtra("LocalNoInternet", json);
+                                    context.startActivity(intent);
                                     return true;
                                 case R.id.menu_borrar:
 
@@ -210,21 +213,20 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
                     // DEJAMOS PARA MENU POP UP
                     popup.inflate(R.menu.menu_favoritos);
 
-                     popup.setGravity(Gravity.RIGHT);
+                    popup.setGravity(Gravity.RIGHT);
 
                     // if you want icon with menu items then write this try-catch block.
                     try {
-                        Field mFieldPopup=popup.getClass().getDeclaredField("mPopup");
+                        Field mFieldPopup = popup.getClass().getDeclaredField("mPopup");
                         mFieldPopup.setAccessible(true);
                         MenuPopupHelper mPopup = (MenuPopupHelper) mFieldPopup.get(popup);
-                      //  mPopup.setForceShowIcon(true);
+                        //  mPopup.setForceShowIcon(true);
                     } catch (Exception e) {
 
                     }
                     popup.show();
                 }
             });
-
 
 
         }
