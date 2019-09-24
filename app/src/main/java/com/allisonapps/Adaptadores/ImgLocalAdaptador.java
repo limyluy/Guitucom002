@@ -63,6 +63,7 @@ public class ImgLocalAdaptador extends RecyclerView.Adapter<ImgLocalAdaptador.Ta
 
             imgLocal = itemView.findViewById(R.id.img_card_locles_detalle);
 
+            Log.e("echu","ok");
         }
     }
 
