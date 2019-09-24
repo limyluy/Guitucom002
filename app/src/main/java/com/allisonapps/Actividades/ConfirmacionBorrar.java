@@ -54,12 +54,14 @@ public class ConfirmacionBorrar extends AppCompatActivity {
 
     }
 
+    // metodo para llenar la pregunra con el nombre del local
     private void llenarPregunta(int position) {
         String nombre = localesLista.get(position).getNombre();
         txtPregunta.setText("¿Desea borrar " + nombre + " de su lista de locales favoritos?");
 
     }
 
+    // metodo para setear lso widgets
     private void recuperarWidget() {
 
         txtPregunta = findViewById(R.id.txt_pregunta_alert);
@@ -67,6 +69,7 @@ public class ConfirmacionBorrar extends AppCompatActivity {
         txtCancelar = findViewById(R.id.txt_cancelar_alert);
     }
 
+    // metodo para borrar el local y actualizar el arrayList en share preference
     private void borrarLocal(int position) {
         String nombre = localesLista.get(position).getNombre();
         localesLista.remove(position);
@@ -87,11 +90,14 @@ public class ConfirmacionBorrar extends AppCompatActivity {
 
     }
 
+    // metodo para recuperar la posicion del local marcado en el arraylist
     private int recuperarPosition() {
         int position = getIntent().getIntExtra("position", 0);
         return position;
     }
 
+
+    // metodo para recuperar el arrayList de locales favoritos
     private ArrayList<Locales> recuperarListFavoritos() {
 
         String stringFavoritos = getIntent().getStringExtra("favoritos");

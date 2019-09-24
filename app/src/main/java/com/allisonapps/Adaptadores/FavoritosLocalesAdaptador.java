@@ -2,13 +2,19 @@ package com.allisonapps.Adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,7 +39,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -203,13 +213,12 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
                                     Intent intentBorrar = new Intent(context, ConfirmacionBorrar.class);
                                     Gson gsonDos = new Gson();
                                     String jsonDos = gsonDos.toJson(list);
-                                    intentBorrar.putExtra("favoritos",jsonDos);
-                                    intentBorrar.putExtra("ppsition",getAdapterPosition());
+                                    intentBorrar.putExtra("favoritos", jsonDos);
+                                    intentBorrar.putExtra("ppsition", getAdapterPosition());
                                     context.startActivity(intentBorrar);
-
-
                                     return true;
                                 case R.id.menu_compartir:
+                                    compartirEnRedes(getAdapterPosition());
 
                                     return true;
                                 default:
@@ -240,6 +249,21 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         }
     }
 
+    private void compartirEnRedes(int position) {
+
+        Locales locales = list.get(position);
+        String mensaje = locales.getNombre() + Html.fromHtml("<br />") +
+                locales.getDescripcion() + Html.fromHtml("<br />") +
+                "Direccion: " + locales.getDireccion() + Html.fromHtml("<br />") +
+                "Telefono: " + locales.getTelefono() + Html.fromHtml("<br />") +
+                "Encuantralo el la aplicacion de GUITUCOM";
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
+        context.startActivity(Intent.createChooser(intent, "Compartir con: "));
+    }
+
     public interface OnItemClickListener {
         void onItemClick(Locales local, int position);
     }
@@ -255,6 +279,8 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
         context.startActivity(intent);
 
     }
+
+
 }
 
 
