@@ -119,6 +119,8 @@ public class VerLocalDetalle extends AppCompatActivity {
     private Locales local;
     private FirebaseStorage storage;
 
+    private boolean presionado = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +175,7 @@ public class VerLocalDetalle extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 agregarLocalesFavoritos();
+                presionado = true;
             }
         });
 
@@ -194,10 +197,11 @@ public class VerLocalDetalle extends AppCompatActivity {
     // metodo para agregar locales a un array en sahrepreference
     private void agregarLocalesFavoritos() {
 
-        if (isFavorito == true) {
+        if (isFavorito == true || presionado ) {
             Toast.makeText(context, local.getNombre() + " Ya se encuentra en tu lista de favoritos", Toast.LENGTH_LONG).show();
             return;
         }
+
 
         final String url = String.valueOf(local.getImgLogo());
         StorageReference httpsReference = storage.getReferenceFromUrl(url);

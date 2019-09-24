@@ -56,6 +56,8 @@ public class DetalleLocalNoInternet extends AppCompatActivity {
         txtDirLocal.setText(local.getDireccion());
         txtTelLocal.setText(local.getTelefono());
 
+
+
         imgTarLocal.setVisibility(local.isTarjeta() ? View.VISIBLE : View.INVISIBLE);
         imgParLocal.setVisibility(local.isGaraje() ? View.VISIBLE : View.INVISIBLE);
         imgGarLocal.setVisibility(local.isGarantia() ? View.VISIBLE : View.INVISIBLE);

@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allisonapps.Actividades.ConfirmacionBorrar;
 import com.allisonapps.Actividades.DetalleLocalNoInternet;
 import com.allisonapps.Actividades.LocalesLista;
 import com.allisonapps.Actividades.VerLocalDetalle;
@@ -199,6 +200,13 @@ public class FavoritosLocalesAdaptador extends RecyclerView.Adapter<FavoritosLoc
                                     context.startActivity(intent);
                                     return true;
                                 case R.id.menu_borrar:
+                                    Intent intentBorrar = new Intent(context, ConfirmacionBorrar.class);
+                                    Gson gsonDos = new Gson();
+                                    String jsonDos = gsonDos.toJson(list);
+                                    intentBorrar.putExtra("favoritos",jsonDos);
+                                    intentBorrar.putExtra("ppsition",getAdapterPosition());
+                                    context.startActivity(intentBorrar);
+
 
                                     return true;
                                 case R.id.menu_compartir:
